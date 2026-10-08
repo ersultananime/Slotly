@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zapis — запись к мастеру без переписки</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #211B1C;
+      --ink-soft: #5B5254;
+      --paper: #FBF4EF;
+      --paper-raised: #FFFFFF;
+      --coral: #E2704F;
+      --coral-deep: #C4552F;
+      --pine: #2E5546;
+      --pine-soft: #E8F0EA;
+      --sand: #D9BD93;
+      --line: #E7DBD0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif {
+      font-family: 'Fraunces', serif;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ============ NAV ============ */
+    nav {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--coral);
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      font-size: 15px;
+      color: var(--ink-soft);
+    }
+
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-cta {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 11px 22px;
+      border-radius: 100px;
+      font-size: 14.5px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      padding: 88px 0 64px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      color: var(--coral-deep);
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: 54px;
+      line-height: 1.06;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      max-width: 620px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--coral-deep);
+    }
+
+    .hero p.lead {
+      margin-top: 26px;
+      font-size: 18px;
+      color: var(--ink-soft);
+      max-width: 460px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: var(--coral);
+      color: #fff;
+      padding: 15px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15.5px;
+      display: inline-block;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-ghost {
+      color: var(--ink);
+      padding: 15px 8px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15.5px;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    /* Hero visual: a stacked "slot card" motif */
+    .hero-visual {
+      position: relative;
+      height: 420px;
+    }
+
+    .slot-card {
+      position: absolute;
+      width: 280px;
+      background: var(--paper-raised);
+      border-radius: 18px;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      box-shadow: 0 24px 48px -20px rgba(33, 27, 28, 0.18);
+    }
+
+    .slot-card.c1 {
+      top: 0;
+      right: 40px;
+      transform: rotate(-3deg);
+      z-index: 2;
+    }
+
+    .slot-card.c2 {
+      top: 130px;
+      right: -10px;
+      transform: rotate(2deg);
+      z-index: 1;
+      background: var(--pine);
+      color: #fff;
+      border: none;
+    }
+
+    .slot-card.c3 {
+      top: 250px;
+      right: 90px;
+      transform: rotate(-1deg);
+      z-index: 3;
+    }
+
+    .slot-time {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .slot-service {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    .slot-card.c2 .slot-service {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .slot-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--pine);
+    }
+
+    .slot-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pine);
+    }
+
+    .slot-card.c2 .slot-status {
+      color: #C9E6D6;
+    }
+
+    .slot-card.c2 .slot-status::before {
+      background: #C9E6D6;
+    }
+
+    /* ============ PAIN SECTION ============ */
+    .pain {
+      padding: 60px 0 90px;
+      border-top: 1px solid var(--line);
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 60px;
+    }
+
+    .pain h2 {
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 1.18;
+      letter-spacing: -0.01em;
+    }
+
+    .pain-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .pain-item {
+      display: flex;
+      gap: 18px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pain-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .pain-mark {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--coral);
+      flex-shrink: 0;
+      width: 28px;
+    }
+
+    .pain-text h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .pain-text p {
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    /* ============ HOW IT WORKS ============ */
+    .how {
+      padding: 90px 0;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .how-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+    }
+
+    .how h2 {
+      font-size: 36px;
+      font-weight: 500;
+      max-width: 480px;
+      line-height: 1.2;
+    }
+
+    .how-head p {
+      color: rgba(251, 244, 239, 0.6);
+      max-width: 280px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(251, 244, 239, 0.12);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .how-step {
+      background: var(--ink);
+      padding: 36px 30px 40px;
+    }
+
+    .how-step-label {
+      font-size: 13px;
+      color: var(--sand);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .how-step h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .how-step p {
+      font-size: 14.5px;
+      color: rgba(251, 244, 239, 0.65);
+      line-height: 1.6;
+    }
+
+    /* ============ PRICING ============ */
+    .pricing {
+      padding: 90px 0;
+    }
+
+    .pricing-head {
+      text-align: left;
+      margin-bottom: 48px;
+      max-width: 520px;
+    }
+
+    .pricing-head h2 {
+      font-size: 34px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .pricing-head p {
+      margin-top: 14px;
+      color: var(--ink-soft);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .price-card {
+      background: var(--paper-raised);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 44px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .price-amount {
+      font-family: 'Fraunces', serif;
+      font-size: 52px;
+      font-weight: 500;
+    }
+
+    .price-amount span {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: var(--ink-soft);
+      font-weight: 400;
+    }
+
+    .price-features {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .price-features div {
+      font-size: 14.5px;
+      color: var(--ink-soft);
+      display: flex;
+      gap: 10px;
+    }
+
+    .price-features div::before {
+      content: '—';
+      color: var(--coral);
+    }
+
+    /* ============ FOOTER / FINAL CTA ============ */
+    .final-cta {
+      background: var(--pine-soft);
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .final-cta h2 {
+      font-size: 38px;
+      font-weight: 500;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.2;
+    }
+
+    .final-cta p {
+      margin-top: 16px;
+      color: var(--ink-soft);
+      font-size: 16px;
+    }
+
+    .final-cta .btn-primary {
+      margin-top: 30px;
+      background: var(--pine);
+    }
+
+    footer {
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+    }
+
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 48px;
+        gap: 40px;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .hero-visual {
+        height: 320px;
+      }
+
+      .slot-card {
+        width: 220px;
+      }
+
+      .pain-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .how-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .how-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .price-card {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="wrap">
+      <div class="logo"> <img src="WhatsApp Image 2026-10-01 at 12.44.07.jpeg" alt=""><span
+          class="logo-dot"></span>slotly
+      </div>
+
+      <div class="nav-links">
+        <a href="#pain">Проблема</a>
+        <a href="#how">Как это работает</a>
+        <a href="#pricing">Цена</a>
+      </div>
+      <a href="#demo" class="nav-cta">Открыть страницу записи →</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap" style="display: contents;">
+      <div>
+        <div class="hero-eyebrow">Для мастеров без своего салона</div>
+        <h1 class="serif">Запись к вам, <em>без</em> переписки в директ</h1>
+        <p class="lead">Отправьте клиенту одну ссылку — он сам выберет время. Вы получите напоминание в WhatsApp себе и
+          клиенту, и больше не перепутаете два визита в один час.</p>
+        <div class="hero-actions">
+          <a href="#demo" class="btn-primary">Посмотреть страницу записи</a>
+          <a href="#how" class="btn-ghost">Как это работает</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="slot-card c1">
+          <div class="slot-time serif">15:00</div>
+          <div class="slot-service">Маникюр + покрытие</div>
+          <div class="slot-status">Подтверждено</div>
+        </div>
+        <div class="slot-card c2">
+          <div class="slot-time serif">17:30</div>
+          <div class="slot-service">Коррекция бровей</div>
+          <div class="slot-status">Ждём ответ</div>
+        </div>
+        <div class="slot-card c3">
+          <div class="slot-time serif">19:00</div>
+          <div class="slot-service">Свободно</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="pain" id="pain">
+    <div class="wrap">
+      <div class="pain-grid">
+        <div>
+          <h2 class="serif">Знакомо?</h2>
+        </div>
+        <div class="pain-list">
+          <div class="pain-item">
+            <div class="pain-mark serif">01</div>
+            <div class="pain-text">
+              <h3>Два клиента на одно время</h3>
+              <p>Записи в голове, в заметках и в переписках расходятся между собой — и в какой-то момент две записи
+                накладываются друг на друга.</p>
+            </div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-mark serif">02</div>
+            <div class="pain-text">
+              <h3>Клиент просто не пришёл</h3>
+              <p>Забыл, передумал, постеснялся написать отмену — а вы час просидели без дохода и без предупреждения.</p>
+            </div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-mark serif">03</div>
+            <div class="pain-text">
+              <h3>Директ вечером — как второй рабочий день</h3>
+              <p>«А можно на завтра?», «а какие есть окошки?» — один и тот же диалог с каждым новым клиентом, вручную,
+                каждый раз.</p>
+            </div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-mark serif">04</div>
+            <div class="pain-text">
+              <h3>Непонятно, сколько заработали за месяц</h3>
+              <p>Доход считается по памяти или задним числом — а для отчётности самозанятого это лишняя головная боль.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="how-head">
+        <h2 class="serif">Три шага — и клиенты записываются сами</h2>
+        <p>Настройка занимает меньше времени, чем один рабочий день с клиентами.</p>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-step-label">Шаг 1</div>
+          <h3 class="serif">Настройте своё расписание</h3>
+          <p>Укажите, когда вы работаете и сколько длится каждая услуга. Это займёт пару минут — один раз.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-label">Шаг 2</div>
+          <h3 class="serif">Поставьте ссылку в шапку профиля</h3>
+          <p>Получите персональную страницу вида zapis.kz/ваше_имя — замените ей «пишите в директ» в Instagram.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-label">Шаг 3</div>
+          <h3 class="serif">Клиент выбирает время сам</h3>
+          <p>Вы получаете подтверждённую запись, а за день до визита — автоматическое напоминание обоим в WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="pricing-head">
+        <h2 class="serif">Один тариф, без скрытых условий</h2>
+        <p>Первый месяц бесплатно — чтобы вы увидели разницу до того, как платить.</p>
+      </div>
+      <div class="price-card">
+        <div>
+          <div class="price-amount serif">3 900 ₸<span> / месяц</span></div>
+          <div class="price-features">
+            <div>Безлимитная запись клиентов</div>
+            <div>Напоминания в WhatsApp вам и клиенту</div>
+            <div>Учёт дохода по месяцам и услугам</div>
+            <div>Персональная страница записи</div>
+          </div>
+        </div>
+        <a href="#demo" class="btn-primary">Начать бесплатный месяц</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta" id="demo">
+    <div class="wrap">
+      <h2 class="serif">Посмотрите, как это выглядит для вашего клиента</h2>
+      <p>Ниже — пример страницы записи. Откройте booking.html, чтобы увидеть её отдельно.</p>
+      <a href="booking.html" class="btn-primary">Открыть пример страницы записи →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display: contents;">
+      <div class="logo" style="font-size: 17px;"><span class="logo-dot"></span>Zapis</div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
