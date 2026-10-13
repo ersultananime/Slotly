@@ -44,8 +44,8 @@ export default function Home() {
       {/* ===== НАВИГАЦИЯ ===== */}
       <nav className="border-b border-[#E7DBD0] py-6 px-6 sm:px-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-serif text-2xl font-semibold tracking-tight flex items-center gap-2.5">
-            <img src="/logo.jpeg" alt="Slotly Logo" className="w-7 h-7 object-contain rounded-lg" />
+          <Link href="/" className="font-serif text-2xl font-semibold tracking-tight flex items-center gap-3">
+            <img src="/logo.jpeg" alt="Slotly Logo" className="w-11 h-11 object-contain rounded-xl shadow-sm" />
             slotly
           </Link>
 
@@ -223,8 +223,8 @@ export default function Home() {
 
       {/* ===== ПОДВАЛ ===== */}
       <footer className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5B5254] border-t border-[#E7DBD0]">
-        <div className="font-serif text-base font-semibold text-[#211B1C] flex items-center gap-2">
-          <img src="/logo.jpeg" alt="Slotly Logo" className="w-5 h-5 object-contain rounded" />
+        <div className="font-serif text-base font-semibold text-[#211B1C] flex items-center gap-2.5">
+          <img src="/logo.jpeg" alt="Slotly Logo" className="w-8 h-8 object-contain rounded-lg" />
           Slotly.kz
         </div>
         <div>Платформа онлайн-записи мастеров в Казахстане</div>
