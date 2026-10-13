@@ -1,0 +1,230 @@
+// ============================================================
+// Slotly — Prisma Schema
+// Database: PostgreSQL (Supabase)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Role {
+  CLIENT
+  MASTER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING    // Ожидает подтверждения
+  CONFIRMED  // Подтверждена
+  CANCELLED  // Отменена
+  COMPLETED  // Завершена
+  NO_SHOW    // Клиент не пришёл
+}
+
+enum SubscriptionStatus {
+  TRIAL      // Пробный период
+  ACTIVE     // Активная
+  EXPIRED    // Истекла
+  CANCELLED  // Отменена
+}
+
+// ============================================================
+// ПОЛЬЗОВАТЕЛИ
+// ============================================================
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  phone     String?  @unique
+  name      String
+  role      Role     @default(CLIENT)
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Связи
+  masterProfile    Master?
+  bookingsAsClient Booking[] @relation("ClientBookings")
+  reviews          Review[]
+
+  @@map("users")
+}
+
+// ============================================================
+// КАТЕГОРИИ УСЛУГ
+// ============================================================
+
+model Category {
+  id        String @id @default(uuid())
+  slug      String @unique
+  name      String
+  icon      String // lucide icon name
+  gradient  String // css/tailwind gradient
+  sortOrder Int    @default(0)
+
+  masters Master[]
+
+  @@map("categories")
+}
+
+// ============================================================
+// МАСТЕРА
+// ============================================================
+
+model Master {
+  id             String   @id @default(uuid())
+  slug           String   @unique
+  userId         String   @unique
+  categoryId     String
+  specialization String
+  district       String
+  bio            String   @db.Text
+  avatarInitials String
+  avatarGradient String
+  minPrice       Int      @default(0) // KZT
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Рейтинг (денормализовано для скорости)
+  rating      Float @default(0)
+  reviewCount Int   @default(0)
+
+  // Связи
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category     Category      @relation(fields: [categoryId], references: [id])
+  services     Service[]
+  schedules    Schedule[]
+  bookings     Booking[]
+  reviews      Review[]
+  subscription Subscription?
+
+  @@map("masters")
+}
+
+// ============================================================
+// УСЛУГИ
+// ============================================================
+
+model Service {
+  id              String  @id @default(uuid())
+  masterId        String
+  name            String
+  durationMinutes Int
+  price           Int     // KZT
+  isActive        Boolean @default(true)
+  sortOrder       Int     @default(0)
+
+  master   Master    @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  bookings Booking[]
+
+  @@map("services")
+}
+
+// ============================================================
+// РАСПИСАНИЕ МАСТЕРА (рабочие часы по дням недели)
+// ============================================================
+
+model Schedule {
+  id        String  @id @default(uuid())
+  masterId  String
+  dayOfWeek Int     // 0=Пн, 1=Вт, ... 6=Вс
+  startTime String  // "09:00"
+  endTime   String  // "19:00"
+  isWorking Boolean @default(true)
+
+  master Master @relation(fields: [masterId], references: [id], onDelete: Cascade)
+
+  @@unique([masterId, dayOfWeek])
+  @@map("schedules")
+}
+
+// ============================================================
+// БЛОКИРОВКИ ВРЕМЕНИ (выходные, отпуск, перерывы)
+// ============================================================
+
+model TimeBlock {
+  id       String   @id @default(uuid())
+  masterId String
+  startsAt DateTime
+  endsAt   DateTime
+  reason   String?
+
+  @@map("time_blocks")
+}
+
+// ============================================================
+// ЗАПИСИ (БРОНИРОВАНИЯ)
+// ============================================================
+
+model Booking {
+  id         String        @id @default(uuid())
+  masterId   String
+  clientId   String
+  serviceId  String
+  startsAt   DateTime
+  endsAt     DateTime
+  status     BookingStatus @default(PENDING)
+  clientNote String?       // Пожелания клиента
+  masterNote String?       // Заметки мастера
+  totalPrice Int           // KZT, снапшот цены на момент записи
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  master  Master  @relation(fields: [masterId], references: [id])
+  client  User    @relation("ClientBookings", fields: [clientId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+  review  Review?
+
+  @@map("bookings")
+}
+
+// ============================================================
+// ОТЗЫВЫ
+// ============================================================
+
+model Review {
+  id        String   @id @default(uuid())
+  masterId  String
+  clientId  String
+  bookingId String   @unique
+  rating    Int      // 1-5
+  text      String   @db.Text
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  master  Master  @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  client  User    @relation(fields: [clientId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@map("reviews")
+}
+
+// ============================================================
+// ПОДПИСКИ МАСТЕРОВ
+// ============================================================
+
+model Subscription {
+  id        String             @id @default(uuid())
+  masterId  String             @unique
+  status    SubscriptionStatus @default(TRIAL)
+  trialEnds DateTime
+  paidUntil DateTime?
+  priceKzt  Int                @default(3900)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  master Master @relation(fields: [masterId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
