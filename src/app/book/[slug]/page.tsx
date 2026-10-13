@@ -49,7 +49,10 @@ export default function BookingPage() {
           <Link href="/" className="text-sm font-medium text-[#5B5254] hover:text-[#211B1C]">
             ← На главную
           </Link>
-          <span className="font-serif font-semibold text-sm">slotly</span>
+          <div className="flex items-center gap-1.5">
+            <img src="/logo.jpeg" alt="Slotly" className="w-5 h-5 object-contain rounded" />
+            <span className="font-serif font-semibold text-sm">slotly</span>
+          </div>
         </div>
 
         {/* Профиль мастера */}
