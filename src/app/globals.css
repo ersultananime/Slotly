@@ -1,27 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 :root {
-  --ink: #211B1C;
-  --ink-soft: #5B5254;
-  --paper: #FBF4EF;
-  --paper-raised: #FFFFFF;
-  --coral: #E2704F;
-  --coral-deep: #C4552F;
-  --pine: #2E5546;
-  --pine-soft: #E8F0EA;
-  --sand: #D9BD93;
-  --line: #E7DBD0;
+  /* Fresh, Clean, Modern Light Palette (Notion / Stripe / Linear Light) */
+  --color-bg-base: #F8FAFC;
+  --color-bg-subtle: #F1F5F9;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-card: #FFFFFF;
+
+  /* Typography */
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748B;
+  --color-text-faint: #94A3B8;
+
+  /* Refined Blue & Emerald Accents */
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-soft: #EFF6FF;
+  --color-accent-border: #BFDBFE;
+
+  /* Status */
+  --color-success: #10B981;
+  --color-success-soft: #ECFDF5;
+
+  /* Borders & Dividers */
+  --border-light: #E2E8F0;
+  --border-subtle: #EDF2F7;
+  --border-strong: #CBD5E1;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--paper);
-  color: var(--ink);
-  line-height: 1.5;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.font-serif {
-  font-family: 'Fraunces', Georgia, serif;
+/* Micro Focus Rings */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Fresh Light Card with subtle crisp shadow */
+.clean-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clean-card:hover {
+  border-color: #CBD5E1;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
+}
+
+/* Dot pattern background */
+.dot-pattern {
+  background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Ambient warm-blue mesh gradient */
+.ambient-light {
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 65%);
+}
+
+/* Headline gradient */
+.headline-gradient {
+  background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animations */
+@keyframes typing-dots {
+  0%, 20% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+  80%, 100% { opacity: 0.3; transform: translateY(0); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.96); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+::selection {
+  background: #BFDBFE;
+  color: #1E3A8A;
 }
