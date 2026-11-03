@@ -68,13 +68,14 @@ export default function LoginPage() {
             </label>
             <input
               id="email"
+              name="email"
               type="email"
               autoComplete="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@company.com"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
           </div>
 
@@ -85,21 +86,15 @@ export default function LoginPage() {
             </label>
             <input
               id="password"
+              name="password"
               type="password"
               autoComplete="current-password"
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Введите пароль"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
-          </div>
-
-          {/* Forgot password */}
-          <div className="text-right -mt-1">
-            <Link href="/forgot-password" className="text-xs text-slate-500 hover:text-blue-600 transition-colors">
-              Забыли пароль?
-            </Link>
           </div>
 
           {/* Error */}

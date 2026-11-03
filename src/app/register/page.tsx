@@ -108,13 +108,14 @@ export default function RegisterPage() {
             </label>
             <input
               id="email"
+              name="email"
               type="email"
               autoComplete="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@company.com"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
           </div>
 
@@ -125,13 +126,14 @@ export default function RegisterPage() {
             </label>
             <input
               id="password"
+              name="password"
               type="password"
               autoComplete="new-password"
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Минимум 8 символов"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
           </div>
 
@@ -142,13 +144,14 @@ export default function RegisterPage() {
             </label>
             <input
               id="confirm"
+              name="password-confirmation"
               type="password"
               autoComplete="new-password"
               required
               value={confirm}
               onChange={e => setConfirm(e.target.value)}
               placeholder="Повторите пароль"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
             />
           </div>
 

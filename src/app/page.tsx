@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { PRICING } from '@/lib/config';
 import ChatWidgetDemo from './components/ChatWidgetDemo';
 import FloatingSiteChat from './components/FloatingSiteChat';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
       {/* Skip to main content link for keyboard accessibility */}
       <a
         href="#content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:outline-2 focus:outline-offset-2 focus:outline-blue-600"
       >
         Перейти к основному содержимому
       </a>
@@ -25,11 +25,11 @@ export default function Home() {
         className="sticky top-4 z-50 max-w-5xl mx-auto px-4 sm:px-6"
       >
         <div className="bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md shadow-slate-200/50 rounded-full py-2.5 px-5 sm:px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 group">
             <img 
               src="/logo.jpeg" 
-              alt="Slotly Logo" 
-              className="w-8 h-8 rounded-lg object-contain shadow-xs group-hover:scale-105 transition-transform" 
+              alt=""
+              className="w-8 h-8 rounded-lg object-contain shadow-xs motion-safe:group-hover:scale-105 motion-safe:transition-transform"
             />
             <span className="text-base font-extrabold tracking-tight text-slate-900">
               Slotly<span className="text-blue-600">.</span>
@@ -37,27 +37,36 @@ export default function Home() {
           </Link>
 
           <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
-            <a href="#features" className="hover:text-blue-600 transition-colors">
+            <a href="#features" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
               Возможности
             </a>
-            <a href="#how" className="hover:text-blue-600 transition-colors">
+            <a href="#how" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
               Как это работает
             </a>
-            <a href="#audience" className="hover:text-blue-600 transition-colors">
+            <a href="#audience" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
               Для кого
             </a>
-            <a href="#pricing" className="hover:text-blue-600 transition-colors">
+            <a href="#pricing" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
               Тариф
             </a>
           </div>
 
-          <a
-            href="#pricing"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150 ease-out active:scale-95 shadow-sm inline-flex items-center gap-1.5"
-          >
-            <span>Попробовать бесплатно</span>
-            <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-          </a>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/login"
+              className="hidden sm:inline-flex rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            >
+              Войти
+            </Link>
+            <Link
+              href="/register"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition-colors duration-150 ease-out motion-safe:active:scale-[0.96] shadow-sm inline-flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            >
+              <span className="sm:hidden">Начать</span>
+              <span className="hidden sm:inline">Попробовать бесплатно</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -87,17 +96,17 @@ export default function Home() {
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-wrap gap-3.5 items-center">
-                <a
-                  href="#pricing"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-150 ease-out shadow-md shadow-blue-500/20 active:scale-[0.96] flex items-center gap-2"
+                <Link
+                  href="/register"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3.5 rounded-xl text-sm font-semibold transition-colors duration-150 ease-out shadow-md shadow-blue-500/20 motion-safe:active:scale-[0.96] flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
-                  <span>Установить виджет на сайт</span>
+                  <span>Начать бесплатно</span>
                   <span>🚀</span>
-                </a>
+                </Link>
 
                 <a
                   href="#demo"
-                  className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-6 py-3.5 rounded-xl text-sm font-semibold transition-all duration-150 ease-out active:scale-[0.96] shadow-xs flex items-center gap-2"
+                  className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-6 py-3.5 rounded-xl text-sm font-semibold transition-colors duration-150 ease-out motion-safe:active:scale-[0.96] shadow-xs flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                   <span>💬</span>
                   <span>Протестировать чат</span>
@@ -160,7 +169,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="mt-5 p-3 rounded-xl bg-slate-900 text-slate-200 font-mono text-[11px] overflow-x-auto shadow-inner">
-                  <code>&lt;script src="https://slotly.kz/widget.js"&gt;&lt;/script&gt;</code>
+                  <code>&lt;script src=&quot;https://slotly.kz/widget.js&quot;&gt;&lt;/script&gt;</code>
                 </div>
               </div>
 
@@ -414,13 +423,13 @@ export default function Home() {
               </div>
 
               <div className="pt-2">
-                <a
-                  href="#pricing"
+                <Link
+                  href="/register"
                   aria-label={`Начать бесплатный пробный период на ${PRICING.trialDays} дней`}
-                  className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-sm transition-all duration-150 ease-out shadow-md shadow-blue-500/25 active:scale-[0.96] block"
+                  className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-sm transition-colors duration-150 ease-out shadow-md shadow-blue-500/25 motion-safe:active:scale-[0.96] block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                   Начать бесплатный период — {PRICING.trialDays} дней
-                </a>
+                </Link>
                 <p className="text-center text-[11px] text-slate-400 mt-3 font-medium">
                   Без привязки карты • Быстрая отмена в любой момент
                 </p>
@@ -440,13 +449,13 @@ export default function Home() {
                 Установите виджет Slotly за 2 минуты и начинайте получать заявки от посетителей 24/7.
               </p>
               <div className="pt-2 flex justify-center">
-                <a
-                  href="#pricing"
-                  className="bg-white hover:bg-slate-100 text-blue-600 px-8 py-3.5 rounded-xl text-sm font-bold transition-all duration-150 ease-out shadow-lg active:scale-[0.96] inline-flex items-center gap-2"
+                <Link
+                  href="/register"
+                  className="bg-white hover:bg-slate-100 text-blue-700 px-8 py-3.5 rounded-xl text-sm font-bold transition-colors duration-150 ease-out shadow-lg motion-safe:active:scale-[0.96] inline-flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  <span>Установить виджет бесплатно</span>
+                  <span>Создать аккаунт бесплатно</span>
                   <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -459,7 +468,7 @@ export default function Home() {
           <div className="flex items-center gap-2.5 font-medium">
             <img 
               src="/logo.jpeg" 
-              alt="Slotly Logo" 
+              alt=""
               className="w-6 h-6 rounded-md object-contain shadow-2xs" 
             />
             <span className="font-bold text-slate-800">Slotly.kz</span>
@@ -470,6 +479,7 @@ export default function Home() {
             <a href="#features" className="hover:text-blue-600 transition-colors">Возможности</a>
             <a href="#how" className="hover:text-blue-600 transition-colors">Как это работает</a>
             <a href="#pricing" className="hover:text-blue-600 transition-colors">Тариф</a>
+            <Link href="/login" className="hover:text-blue-600 transition-colors">Войти</Link>
           </div>
         </div>
       </footer>

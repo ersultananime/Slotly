@@ -74,7 +74,9 @@ body {
   background: #FFFFFF;
   border: 1px solid var(--border-light);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-property: transform, box-shadow, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .clean-card:hover {
@@ -116,6 +118,24 @@ body {
 
 .animate-pulse-subtle {
   animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .clean-card {
+    transition: none;
+  }
+
+  .clean-card:hover {
+    transform: none;
+  }
+
+  .animate-pulse-subtle {
+    animation: none;
+  }
 }
 
 .font-mono {
