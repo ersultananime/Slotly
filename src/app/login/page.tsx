@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
@@ -41,9 +42,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center px-4 py-12">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 mb-8 group">
-        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-          <span className="text-white font-extrabold text-sm">S</span>
-        </div>
+        <Image src="/logo.jpeg" alt="" width={32} height={32} priority className="h-8 w-8 rounded-lg object-contain shadow-sm motion-safe:group-hover:scale-105 motion-safe:transition-transform" />
         <span className="text-lg font-extrabold tracking-tight text-slate-900">
           Slotly<span className="text-blue-600">.</span>
         </span>

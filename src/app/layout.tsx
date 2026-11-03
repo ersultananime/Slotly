@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Slotly — Умный ИИ-консультант для вашего сайта",
   description: "Установите виджет ИИ-чата на сайт за 2 минуты. ИИ-ассистент будет 24/7 отвечать на вопросы клиентов, консультировать по услугам и собирать лиды.",
+  icons: {
+    icon: "/logo.jpeg",
+    apple: "/logo.jpeg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

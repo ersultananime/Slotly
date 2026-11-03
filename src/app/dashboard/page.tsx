@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, Bot, CheckCircle2, CircleUserRound, LayoutDashboard, LogOut, MessageSquare, Rocket, Sparkles, Users } from 'lucide-react'
@@ -80,9 +81,7 @@ export default function DashboardPage() {
       <aside className="hidden border-r border-slate-200 bg-white lg:flex lg:min-h-screen lg:flex-col" aria-label="Навигация личного кабинета">
         <div className="px-5 py-5">
           <Link href="/" className="inline-flex items-center gap-2.5 rounded-lg focus-visible:outline-offset-4">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 text-sm font-extrabold text-white shadow-sm">
-              S
-            </span>
+            <Image src="/logo.jpeg" alt="" width={36} height={36} priority className="h-9 w-9 rounded-xl object-contain shadow-sm" />
             <span className="text-lg font-extrabold tracking-tight">
               Slotly<span className="text-blue-600">.</span>
             </span>
@@ -123,7 +122,7 @@ export default function DashboardPage() {
         <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur lg:hidden">
           <div className="flex items-center justify-between gap-4 px-5 py-3">
             <Link href="/" className="flex items-center gap-2.5 rounded-lg">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 text-sm font-extrabold text-white">S</span>
+              <Image src="/logo.jpeg" alt="" width={36} height={36} priority className="h-9 w-9 rounded-xl object-contain" />
               <span className="text-lg font-extrabold tracking-tight">Slotly<span className="text-blue-600">.</span></span>
             </Link>
             <button type="button" onClick={handleSignOut} disabled={signingOut} aria-label="Выйти из аккаунта" className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-60">
