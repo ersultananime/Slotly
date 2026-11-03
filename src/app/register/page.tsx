@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
+import { getBaseUrl } from '@/utils/url'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -31,11 +32,12 @@ export default function RegisterPage() {
 
     setLoading(true)
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const baseUrl = getBaseUrl()
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${baseUrl}/auth/callback?next=/dashboard`,
         },
       })
 
@@ -44,10 +46,15 @@ export default function RegisterPage() {
         return
       }
 
-      // Supabase может требовать подтверждение email (зависит от настроек проекта)
+      // Если подтверждение email выключено, Supabase сразу создаёт сессию.
+      if (data.session) {
+        router.push('/dashboard')
+        router.refresh()
+        return
+      }
+
+      // Иначе остаёмся на странице и просим пользователя подтвердить email.
       setSuccess(true)
-      // Если email confirmation выключена — сразу редирект
-      router.push('/dashboard')
     } finally {
       setLoading(false)
     }
