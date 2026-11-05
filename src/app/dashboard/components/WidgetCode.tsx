@@ -1,0 +1,33 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+import { Check, Copy } from 'lucide-react'
+
+export default function WidgetCode({ companyId }: { companyId: string }) {
+  const [copied, setCopied] = useState(false)
+  const [error, setError] = useState('')
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => () => { if (timeout.current) clearTimeout(timeout.current) }, [])
+  const code = `<script src="https://slotly-inky.vercel.app/widget.js" data-company-id="${companyId}"></script>`
+  async function copyCode() {
+    setError('')
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      if (timeout.current) clearTimeout(timeout.current)
+      timeout.current = setTimeout(() => setCopied(false), 2000)
+    } catch {
+      setCopied(false)
+      setError('Не удалось скопировать код. Выделите его и скопируйте вручную.')
+    }
+  }
+  return <div className="mt-5 space-y-4">
+    <p className="text-sm text-slate-500">Добавьте код перед закрывающим тегом &lt;/body&gt; на вашем сайте.</p>
+    <pre tabIndex={0} aria-label="Код установки виджета" className="overflow-x-auto rounded-xl bg-slate-950 p-5 text-sm leading-7 text-emerald-300"><code>{code}</code></pre>
+    <button type="button" onClick={copyCode} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-3 text-sm font-bold hover:bg-slate-50">
+      {copied ? <Check size={18} aria-hidden="true" /> : <Copy size={18} aria-hidden="true" />}
+      {copied ? 'Скопировано' : 'Скопировать код'}
+    </button>
+    <p role="status" aria-live="polite" className="text-sm text-slate-700">{error || (copied ? 'Код скопирован в буфер обмена.' : '')}</p>
+  </div>
+}
