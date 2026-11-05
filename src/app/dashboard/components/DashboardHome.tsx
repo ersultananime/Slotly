@@ -12,7 +12,7 @@ import { createClient } from '@/utils/supabase/client'
 const dashboardItems = [
   {
     title: 'Настроить ИИ-консультанта',
-    description: 'Добавьте информацию о компании, услугах и частых вопросах.',
+    description: 'Укажите сайт — мы подготовим информацию о компании за вас.',
     icon: Bot,
     status: 'Открыть настройки',
     href: '#knowledge-base',
@@ -179,7 +179,7 @@ export default function DashboardHome({ email, companyId, initialContent }: {
           <h2 className="text-xl font-bold">Шаг 1. Настройка ИИ-консультанта</h2>
           <KnowledgeBaseForm initialContent={initialContent} />
         </section>
-        <section id="widget-code" className="mt-8 scroll-mt-32 rounded-2xl border border-slate-200 bg-white p-6">
+        <section id="widget-code" tabIndex={-1} className="mt-8 scroll-mt-32 rounded-2xl border border-slate-200 bg-white p-6">
           <h2 className="text-xl font-bold">Шаг 2. Подключение виджета</h2>
           <WidgetCode companyId={companyId} />
         </section>
