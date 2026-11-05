@@ -40,8 +40,23 @@ export async function POST(request: Request) {
     }
     const url = websiteUrl(body.url)
     // Atomic quota stored in Supabase, shared by all server instances.
-    const { data: permitted, error: quotaError } = await supabase.rpc('claim_website_analysis')
-    if (quotaError) return json({ error: 'Анализ сайта временно недоступен. Попробуйте позже.' }, 503)
+    const { data: permitted, error: quotaError, status: quotaStatus } = await supabase.rpc('claim_website_analysis')
+    if (quotaError) {
+      const reference = crypto.randomUUID()
+      // Only a validated error code and opaque reference are exposed to the browser.
+      // The server log identifies the failing database without recording keys or tokens.
+      const code = /^[A-Z0-9]{5,16}$/.test(quotaError.code) ? quotaError.code : 'QUOTA_UNAVAILABLE'
+      console.error('website_analysis_quota_failed', {
+        reference,
+        code,
+        status: quotaStatus,
+        message: quotaError.message,
+        project: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL!).hostname,
+      })
+      return json({
+        error: `Не удалось проверить доступ к анализу. Код: ${code}. Номер обращения: ${reference}.`,
+      }, 503)
+    }
     if (!permitted) return json({ error: 'Подождите минуту перед следующим анализом. Доступно до 10 попыток в час.' }, 429)
     const { pages, skipped } = await collectWebsite(url.href)
     const content = await summarizeWebsite(pages)
