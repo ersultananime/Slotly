@@ -56,7 +56,7 @@ test('AI request sends bounded source data and rejects failed or incomplete resp
   t.after(() => { if (previous === undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY = previous })
   let result: unknown = { candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'О компании: ремонт.' }] } }] }
   const mocked = t.mock.method(globalThis, 'fetch', async (url: unknown, init: RequestInit) => {
-    assert.match(String(url), /generativelanguage\.googleapis\.com\/v1beta\/models\/gemini-2\.5-flash:generateContent/)
+    assert.match(String(url), /generativelanguage\.googleapis\.com\/v1beta\/models\/gemini-3\.5-flash-lite:generateContent/)
     assert.equal(new Headers(init.headers).get('x-goog-api-key'), 'test-key-not-real')
     const request = JSON.parse(init.body as string)
     assert.ok(request.generationConfig.maxOutputTokens <= 3500)

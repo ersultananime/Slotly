@@ -13,7 +13,7 @@
 - Применить supabase/migrations/0003_website_analysis_quota.sql в Supabase SQL Editor.
 - Добавить GEMINI_API_KEY в переменные окружения сервера/Vercel, без префикса NEXT_PUBLIC_.
 - Не передавать ключ клиентам, не хранить в Git. Локально использовать .env.local.
-- При необходимости задать GEMINI_WEBSITE_MODEL (по умолчанию gemini-2.5-flash).
+- При необходимости задать GEMINI_WEBSITE_MODEL (по умолчанию gemini-3.5-flash-lite).
 - Перезапустить сервер или выполнить новый deployment после изменения переменных.
 - Хостинг должен разрешать Node.js DNS/HTTP/HTTPS и запросы длительностью до 90 секунд.
 

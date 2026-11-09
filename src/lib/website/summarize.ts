@@ -54,7 +54,7 @@ export async function summarizeWebsite(pages: WebsitePage[]) {
   const key = process.env.GEMINI_API_KEY
   if (!key) throw new WebsiteError('Анализ сайта временно недоступен. Вы можете заполнить информацию вручную.')
 
-  const model = process.env.GEMINI_WEBSITE_MODEL || 'gemini-2.5-flash'
+  const model = process.env.GEMINI_WEBSITE_MODEL || 'gemini-3.5-flash-lite'
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
     {

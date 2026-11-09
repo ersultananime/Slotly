@@ -66,7 +66,7 @@ Copy-Item .env.example .env.local
 | `NEXT_PUBLIC_SUPABASE_URL` | URL проекта Supabase. Обязателен для авторизации и кабинета. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Публичный anon-ключ того же проекта Supabase. |
 | `GEMINI_API_KEY` | Серверный ключ Google Gemini для анализа сайтов. Без него доступно ручное заполнение базы знаний. |
-| `GEMINI_WEBSITE_MODEL` | Модель анализа; по умолчанию `gemini-2.5-flash`. |
+| `GEMINI_WEBSITE_MODEL` | Модель анализа; по умолчанию `gemini-3.5-flash-lite`. |
 | `NEXT_PUBLIC_SITE_URL` | Необязательный адрес приложения для ссылок подтверждения email: локально `http://localhost:3000`, в production — домен приложения. |
 | `DATABASE_URL`, `DIRECT_URL` | Подключения для Prisma и старой схемы онлайн-записи. Кабинет работает через Supabase-клиент; эти подключения не заменяют SQL-миграции кабинета. |
 
