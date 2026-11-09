@@ -1,4 +1,4 @@
-Обновлено: анализ сайта описан в docs/website-analysis.txt. Для него нужны OPENAI_API_KEY и миграция 0003.
+Обновлено: анализ сайта описан в docs/website-analysis.txt. Для него нужны GEMINI_API_KEY и миграция 0003.
 
 Slotly: полный код личного кабинета
 

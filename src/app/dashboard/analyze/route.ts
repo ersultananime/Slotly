@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   if (authError || !user) return json({ error: 'Войдите в аккаунт ещё раз.' }, 401)
   const { data: company, error: companyError } = await supabase.from('companies').select('id').eq('user_id', user.id).maybeSingle()
   if (companyError || !company) return json({ error: 'Не удалось найти компанию. Обратитесь в поддержку.' }, 403)
-  if (!process.env.OPENAI_API_KEY) return json({ error: 'Анализ сайта временно недоступен. Вы можете заполнить информацию вручную.' }, 503)
+  if (!process.env.GEMINI_API_KEY) return json({ error: 'Анализ сайта временно недоступен. Вы можете заполнить информацию вручную.' }, 503)
 
   try {
     // Bound the body even when Content-Length is absent or forged.

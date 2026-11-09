@@ -51,28 +51,31 @@ test('caps page text and discovered links', () => {
 })
 
 test('AI request sends bounded source data and rejects failed or incomplete responses', async t => {
-  const previous = process.env.OPENAI_API_KEY
-  process.env.OPENAI_API_KEY = 'test-key-not-real'
-  t.after(() => { if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous })
-  let result: unknown = { status: 'completed', output: [{ type: 'reasoning' }, { type: 'message', content: [{ type: 'output_text', text: 'О компании: ремонт.' }] }] }
-  const mocked = t.mock.method(globalThis, 'fetch', async (_url: unknown, init: RequestInit) => {
+  const previous = process.env.GEMINI_API_KEY
+  process.env.GEMINI_API_KEY = 'test-key-not-real'
+  t.after(() => { if (previous === undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY = previous })
+  let result: unknown = { candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'О компании: ремонт.' }] } }] }
+  const mocked = t.mock.method(globalThis, 'fetch', async (url: unknown, init: RequestInit) => {
+    assert.match(String(url), /generativelanguage\.googleapis\.com\/v1beta\/models\/gemini-2\.5-flash:generateContent/)
+    assert.equal(new Headers(init.headers).get('x-goog-api-key'), 'test-key-not-real')
     const request = JSON.parse(init.body as string)
-    assert.equal(request.store, false)
-    assert.ok(request.max_output_tokens <= 3500)
-    assert.match(request.instructions, /недоверенные данные/)
-    assert.equal(JSON.parse(request.input).pages[0].url, 'https://example.com/')
+    assert.ok(request.generationConfig.maxOutputTokens <= 3500)
+    assert.match(request.systemInstruction.parts[0].text, /недоверенные данные/)
+    assert.equal(JSON.parse(request.contents[0].parts[0].text).pages[0].url, 'https://example.com/')
     return Response.json(result)
   })
   const pages = [{ url: 'https://example.com/', title: 'Компания', text: 'Услуги ремонта' }]
   assert.equal(await summarizeWebsite(pages), 'О компании: ремонт.')
-  result = { status: 'incomplete', output: [] }
+  result = { candidates: [{ finishReason: 'MAX_TOKENS', content: { parts: [{ text: 'обрезано' }] } }] }
   await assert.rejects(summarizeWebsite(pages), /не завершён/)
-  result = { status: 'completed', output: [{ type: 'message', content: [{ type: 'refusal' }] }] }
+  result = { candidates: [{ finishReason: 'STOP', content: { parts: [] } }] }
   await assert.rejects(summarizeWebsite(pages), /полное описание/)
-  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 'credit_balance_exhausted', type: 'insufficient_quota' } }, { status: 429 }))
-  await assert.rejects(summarizeWebsite(pages), /недоступны кредиты.*credit_balance_exhausted/)
-  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 'invalid_api_key', type: 'invalid_request_error' } }, { status: 401 }))
-  await assert.rejects(summarizeWebsite(pages), /Ключ OpenAI недействителен.*invalid_api_key/)
-  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 'model_not_found', type: 'invalid_request_error' } }, { status: 404 }))
-  await assert.rejects(summarizeWebsite(pages), /Модель OpenAI недоступна.*model_not_found/)
+  result = { promptFeedback: { blockReason: 'SAFETY' } }
+  await assert.rejects(summarizeWebsite(pages), /не смог обработать/)
+  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 429, status: 'RESOURCE_EXHAUSTED' } }, { status: 429 }))
+  await assert.rejects(summarizeWebsite(pages), /бесплатный лимит Gemini.*RESOURCE_EXHAUSTED/)
+  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 400, status: 'API_KEY_INVALID' } }, { status: 400 }))
+  await assert.rejects(summarizeWebsite(pages), /Ключ Gemini недействителен.*API_KEY_INVALID/)
+  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 404, status: 'NOT_FOUND' } }, { status: 404 }))
+  await assert.rejects(summarizeWebsite(pages), /Модель Gemini недоступна.*NOT_FOUND/)
 })
