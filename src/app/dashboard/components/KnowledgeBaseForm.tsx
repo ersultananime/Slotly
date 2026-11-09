@@ -1,9 +1,8 @@
 'use client'
 
 import { useRef, useState, useTransition } from 'react'
-import { useRouter, unstable_rethrow } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { ArrowRight, Globe, LoaderCircle, Sparkles } from 'lucide-react'
-import { saveKnowledge } from '../actions'
 
 type Analysis = { content: string; sources: { url: string; title: string }[]; skipped: number }
 
@@ -97,14 +96,27 @@ export default function KnowledgeBaseForm({ initialContent }: { initialContent: 
       setNotice({})
       startTransition(async () => {
         try {
-          const result = await saveKnowledge(content)
-          setNotice(result)
+          const response = await fetch('/dashboard/knowledge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content }),
+            signal: AbortSignal.timeout(30000),
+          })
+          if (response.status === 401 || response.redirected) {
+            router.replace('/login')
+            return
+          }
+          const result = await response.json().catch(() => null)
+          if (!response.ok || !result?.success) {
+            setNotice({ error: result?.error || 'Не удалось сохранить данные. Попробуйте ещё раз.' })
+            return
+          }
+          setNotice({ success: true })
           if (result.success) {
             window.location.hash = 'widget-code'
             document.getElementById('widget-code')?.focus({ preventScroll: true })
           }
-        } catch (error) {
-          unstable_rethrow(error)
+        } catch {
           setNotice({ error: 'Не удалось сохранить данные. Проверьте соединение и повторите попытку.' })
         }
       })
