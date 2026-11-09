@@ -40,7 +40,12 @@ export async function POST(request: Request) {
     }
     const url = websiteUrl(body.url)
     // Atomic quota stored in Supabase, shared by all server instances.
-    const { data: permitted, error: quotaError, status: quotaStatus } = await supabase.rpc('claim_website_analysis')
+    // Send an explicit JSON object. In production, an omitted body was resolved by
+    // PostgREST as a different function signature and returned PGRST202.
+    const { data: permitted, error: quotaError, status: quotaStatus } = await supabase.rpc(
+      'claim_website_analysis',
+      {},
+    )
     if (quotaError) {
       const reference = crypto.randomUUID()
       // Only a validated error code and opaque reference are exposed to the browser.
