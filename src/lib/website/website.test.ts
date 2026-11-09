@@ -69,6 +69,10 @@ test('AI request sends bounded source data and rejects failed or incomplete resp
   await assert.rejects(summarizeWebsite(pages), /не завершён/)
   result = { status: 'completed', output: [{ type: 'message', content: [{ type: 'refusal' }] }] }
   await assert.rejects(summarizeWebsite(pages), /полное описание/)
-  mocked.mock.mockImplementation(async () => new Response('Unavailable', { status: 429 }))
-  await assert.rejects(summarizeWebsite(pages), /Не удалось/)
+  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 'credit_balance_exhausted', type: 'insufficient_quota' } }, { status: 429 }))
+  await assert.rejects(summarizeWebsite(pages), /недоступны кредиты.*credit_balance_exhausted/)
+  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 'invalid_api_key', type: 'invalid_request_error' } }, { status: 401 }))
+  await assert.rejects(summarizeWebsite(pages), /Ключ OpenAI недействителен.*invalid_api_key/)
+  mocked.mock.mockImplementation(async () => Response.json({ error: { code: 'model_not_found', type: 'invalid_request_error' } }, { status: 404 }))
+  await assert.rejects(summarizeWebsite(pages), /Модель OpenAI недоступна.*model_not_found/)
 })

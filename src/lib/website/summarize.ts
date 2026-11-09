@@ -9,6 +9,39 @@ const responseSchema = z.object({
   })),
 })
 
+const apiErrorSchema = z.object({
+  error: z.object({
+    code: z.string().nullable().optional(),
+    type: z.string().nullable().optional(),
+  }),
+})
+
+function openAIError(status: number, body: unknown) {
+  const parsed = apiErrorSchema.safeParse(body)
+  const rawCode = parsed.success ? (parsed.data.error.code || parsed.data.error.type) : undefined
+  const code = rawCode && /^[a-z0-9_]{2,80}$/i.test(rawCode) ? rawCode : `http_${status}`
+
+  if (status === 401) {
+    return new WebsiteError(`Ключ OpenAI недействителен или не имеет нужного разрешения. Код: ${code}. Проверьте OPENAI_API_KEY в Vercel.`)
+  }
+  if (status === 403) {
+    return new WebsiteError(`OpenAI отклонил доступ проекта. Код: ${code}. Проверьте разрешения API-ключа и проекта OpenAI.`)
+  }
+  if (status === 429 && ['credit_balance_exhausted', 'insufficient_quota', 'organization_spend_limit_exceeded', 'project_spend_limit_exceeded', 'organization_usage_limit_exceeded'].includes(code)) {
+    return new WebsiteError(`Для OpenAI API недоступны кредиты или исчерпан лимит. Код: ${code}. Проверьте Billing и Limits в OpenAI Platform.`)
+  }
+  if (status === 429) {
+    return new WebsiteError(`OpenAI временно ограничил число запросов. Код: ${code}. Подождите и повторите попытку.`)
+  }
+  if (status === 404 || code === 'model_not_found') {
+    return new WebsiteError(`Модель OpenAI недоступна этому проекту. Код: ${code}. Проверьте OPENAI_WEBSITE_MODEL.`)
+  }
+  if (status >= 500) {
+    return new WebsiteError(`Сервис OpenAI временно недоступен. Код: ${code}. Попробуйте позже.`)
+  }
+  return new WebsiteError(`OpenAI отклонил запрос. Код: ${code}. Проверьте настройки API-проекта.`)
+}
+
 export async function summarizeWebsite(pages: WebsitePage[]) {
   const key = process.env.OPENAI_API_KEY
   if (!key) throw new WebsiteError('Анализ сайта временно недоступен. Вы можете заполнить информацию вручную.')
@@ -26,8 +59,9 @@ FAQ составляй только когда ответ явно есть в �
       input: JSON.stringify({ pages }),
     }),
   })
-  if (!response.ok) throw new WebsiteError('Не удалось подготовить описание. Попробуйте позже или заполните информацию вручную.')
-  const parsed = responseSchema.safeParse(await response.json())
+  const responseBody: unknown = await response.json().catch(() => null)
+  if (!response.ok) throw openAIError(response.status, responseBody)
+  const parsed = responseSchema.safeParse(responseBody)
   if (!parsed.success) throw new WebsiteError('Анализ не завершён. Попробуйте ещё раз.')
   const content = parsed.data.output.filter(item => item.type === 'message')
     .flatMap(item => item.content ?? []).filter(item => item.type === 'output_text')
