@@ -1,9 +1,13 @@
 import 'server-only'
 import { cache } from 'react'
 import { redirect } from 'next/navigation'
+import { connection } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
 
 export const requireUser = cache(async () => {
+  // Supabase Auth reads and refreshes time-sensitive session state. Do not run it
+  // while Next.js is building the static shell for a protected dashboard page.
+  await connection()
   const supabase = await createServerClient()
   const { data: { user }, error } = await supabase.auth.getUser()
   if (error || !user) redirect('/login')
