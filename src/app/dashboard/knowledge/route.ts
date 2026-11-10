@@ -43,9 +43,38 @@ export async function POST(request: Request) {
     }
 
     const { supabase, companyId } = await requireCompany()
-    const { data, error } = await supabase.from('knowledge_base')
-      .upsert({ company_id: companyId, content }, { onConflict: 'company_id' })
-      .select('id').single()
+
+    // Do not rely on a database UNIQUE constraint here. Some existing Slotly
+    // projects were created before knowledge_base(company_id) became unique,
+    // so PostgreSQL rejects an UPSERT with code 42P10 in those projects.
+    const { data: existing, error: lookupError } = await supabase
+      .from('knowledge_base')
+      .select('id')
+      .eq('company_id', companyId)
+      .limit(1)
+      .maybeSingle()
+
+    let data: { id: string } | null = null
+    let error = lookupError
+
+    if (!lookupError) {
+      const result = existing
+        ? await supabase
+            .from('knowledge_base')
+            .update({ content })
+            .eq('id', existing.id)
+            .eq('company_id', companyId)
+            .select('id')
+            .single()
+        : await supabase
+            .from('knowledge_base')
+            .insert({ company_id: companyId, content })
+            .select('id')
+            .single()
+
+      data = result.data
+      error = result.error
+    }
 
     if (error || !data) {
       const reference = crypto.randomUUID()
