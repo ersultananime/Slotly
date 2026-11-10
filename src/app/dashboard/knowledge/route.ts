@@ -68,7 +68,7 @@ export async function POST(request: Request) {
             .single()
         : await supabase
             .from('knowledge_base')
-            .insert({ company_id: companyId, content })
+            .insert({ company_id: companyId, content, content_type: 'text' })
             .select('id')
             .single()
 
