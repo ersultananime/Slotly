@@ -6,7 +6,13 @@ import { ArrowRight, Globe, LoaderCircle, Sparkles } from 'lucide-react'
 
 type Analysis = { content: string; sources: { url: string; title: string }[]; skipped: number }
 
-export default function KnowledgeBaseForm({ initialContent }: { initialContent: string }) {
+export default function KnowledgeBaseForm({
+  initialContent,
+  companyId,
+}: {
+  initialContent: string
+  companyId: string
+}) {
   const router = useRouter()
   const [content, setContent] = useState(initialContent)
   const [url, setUrl] = useState('')
@@ -49,7 +55,7 @@ export default function KnowledgeBaseForm({ initialContent }: { initialContent: 
   }
 
   return <div className="mt-5 space-y-6">
-    <form onSubmit={analyzeSite} aria-busy={isAnalyzing} className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5 sm:p-6">
+    <form onSubmit={analyzeSite} autoComplete="off" aria-busy={isAnalyzing} className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5 sm:p-6">
       <div className="flex items-start gap-3">
         <span className="rounded-xl bg-white p-2.5 text-blue-600"><Globe size={22} aria-hidden="true" /></span>
         <div>
@@ -59,7 +65,7 @@ export default function KnowledgeBaseForm({ initialContent }: { initialContent: 
       </div>
       <label htmlFor="company-website" className="mt-5 block text-sm font-semibold text-slate-700">Сайт вашей компании</label>
       <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-        <input id="company-website" name="website" type="text" inputMode="url" autoComplete="url" required maxLength={2048}
+        <input id="company-website" name={`company-website-${companyId}`} type="url" inputMode="url" autoComplete="off" spellCheck={false} required maxLength={2048}
           value={url} onChange={event => setUrl(event.target.value)} disabled={busy}
           aria-describedby="website-hint" placeholder="https://ваша-компания.kz"
           className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 text-base disabled:opacity-60" />

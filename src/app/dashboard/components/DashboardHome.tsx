@@ -177,7 +177,7 @@ export default function DashboardHome({ email, companyId, initialContent }: {
 
         <section id="knowledge-base" className="mt-10 scroll-mt-32 rounded-2xl border border-slate-200 bg-white p-6">
           <h2 className="text-xl font-bold">Шаг 1. Настройка ИИ-консультанта</h2>
-          <KnowledgeBaseForm initialContent={initialContent} />
+          <KnowledgeBaseForm initialContent={initialContent} companyId={companyId} />
         </section>
         <section id="widget-code" tabIndex={-1} className="mt-8 scroll-mt-32 rounded-2xl border border-slate-200 bg-white p-6">
           <h2 className="text-xl font-bold">Шаг 2. Подключение виджета</h2>
