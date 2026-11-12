@@ -1,64 +1,63 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
+import { z } from 'zod'
+import { answerFromKnowledge, WidgetChatError } from '@/lib/widget/gemini'
+import { requestAddress, takeRateLimit } from '@/lib/widget/rate-limit'
+import { readJson, RequestBodyError } from '@/lib/widget/request'
 
-interface ChatRequest {
-  message: string;
-  history?: Array<{ sender: 'bot' | 'user'; text: string }>;
+const requestSchema = z.object({
+  message: z.string().trim().min(1).max(1200),
+  history: z.array(z.object({
+    sender: z.enum(['bot', 'user']),
+    text: z.string().trim().min(1).max(1200),
+  })).max(10).default([]),
+})
+
+const slotlyKnowledge = `Slotly находится в открытом бета-тестировании.
+Slotly анализирует до пяти публичных страниц сайта компании и подготавливает черновик базы знаний. Владелец проверяет и редактирует текст перед сохранением.
+После настройки владелец получает HTML-скрипт с идентификатором компании для установки виджета.
+Виджет отвечает на вопросы только по сохранённой базе знаний конкретной компании. Если информации нет, он должен честно сообщить об этом.
+Посетитель может добровольно открыть форму заявки и оставить имя, телефон, email или Telegram. Заявка сохраняется в разделе «Собранные лиды» личного кабинета владельца.
+Для установки используется обычный внешний JavaScript-файл. Проверка совместимости с конструкторами сайтов и фреймворками проводится поэтапно во время бета-теста.
+Текущая коммерческая цена и условия оплаты ещё не утверждены. Во время бета-тестирования регистрация бесплатна.
+Интеграции с внешними CRM, уведомления в Telegram и перевод диалога живому оператору пока не реализованы.`
+
+function json(body: unknown, status = 200, headers?: HeadersInit) {
+  return NextResponse.json(body, {
+    status,
+    headers: { 'Cache-Control': 'private, no-store', ...headers },
+  })
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    const body: ChatRequest = await req.json();
-    const userMessage = (body.message || '').trim();
+    const body = await readJson(request)
+    const parsed = requestSchema.safeParse(body)
+    if (!parsed.success) return json({ error: 'Введите вопрос длиной до 1200 символов.' }, 400)
 
-    if (!userMessage) {
-      return NextResponse.json({ reply: 'Пожалуйста, введите ваш вопрос.' }, { status: 400 });
-    }
-
-    const lower = userMessage.toLowerCase();
-
-    // Интеллектуальный движок базы знаний Slotly
-    let reply = '';
-
-    // 1. Приветствие
-    if (/^(привет|здравствуй|добрый|салем|хай|hello|hi)/i.test(lower)) {
-      reply = 'Здравствуйте! 👋 Я ИИ-консультант Slotly. Могу рассказать о тарифах, возможностях виджета или помочь подключить его на ваш сайт за 2 минуты. О чём вам рассказать? 😊';
-    }
-    // 2. Цены и тарифы
-    else if (/(цен|стоим|тариф|сколько стоит|прайс|оплат|подписк)/i.test(lower)) {
-      reply = 'У нас один понятный тариф — 4 900 ₸ в месяц 💎\n\nВ него входят:\n• Безлимитные диалоги с клиентами 24/7\n• Сбор контактов и лидов в Telegram\n• Обучение по вашей базе знаний\n• Кастомизация внешнего вида\n\nПервые 14 дней бесплатно без привязки карты! 🚀';
-    }
-    // 3. Установка и интеграция
-    else if (/(установ|интеграц|подключ|сайт|тильд|tilda|wordpress|вордпресс|код|скрипт|html)/i.test(lower)) {
-      reply = 'Виджет устанавливается буквально в 1 строчку кода! 🔌\n\nВы просто копируете скрипт из личного кабинета и вставляете перед закрывающим тегом </body> на любую платформу: Tilda, WordPress, React, Bitrix или обычный HTML. Это занимает меньше 2 минут!';
-    }
-    // 4. Обучение ИИ и база знаний
-    else if (/(обуч|баз|знани|правил|faq|прайс-лист|настрой|отвеча)/i.test(lower)) {
-      reply = 'ИИ обучается очень легко 📚:\nВы просто загружаете ваш прайс-лист, документ с частыми вопросами (FAQ) или указываете ссылку на страницы сайта. Ассистент будет отвечать клиентам строго по вашим материалам и ценам без галлюцинаций ✨';
-    }
-    // 5. Сбор лидов и контактов
-    else if (/(лид|контакт|телефон|номер|telegram|телеграм|whatsapp|crm|заявк)/i.test(lower)) {
-      reply = 'Slotly аккуратно запрашивает у клиента имя, номер телефона или Telegram прямо в ходе консультации 🎯\n\nКак только клиент оставляет контакты, уведомление мгновенно отправляется вам в Telegram-чат или CRM-систему, чтобы вы могли закрыть сделку!';
-    }
-    // 6. Перевод на оператора
-    else if (/(оператор|менеджер|человек|сложн|перевод)/i.test(lower)) {
-      reply = 'Если вопрос клиента слишком сложный или требует индивидуального решения, ИИ вежливо предупредит и мгновенно переведёт диалог живому оператору в Telegram или чат с сохранением всей истории 🤝';
-    }
-    // 7. Пользователь оставил контакты (номер или телефон)
-    else if (/(\+?7|8)[\s\-]?[0-9]{3}[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}|@[a-z0-9_]{3,}/i.test(lower)) {
-      reply = 'Спасибо большое! 🎉 Мы зафиксировали ваши контактные данные. Наш специалист свяжется с вами в течение 10 минут и поможет с быстрой настройкой виджета под ваш бизнес!';
-    }
-    // 8. Запись / бронь
-    else if (/(запис|хочу|купит|подключить|начать|попробовать|тест)/i.test(lower)) {
-      reply = 'Отлично! Вы можете начать прямо сейчас — у вас будет 14 дней бесплатного периода 🚀 Напишите ваш номер телефона или Telegram, и мы активируем пробный доступ!';
-    }
-    // 9. Универсальный вежливый ответ
-    else {
-      reply = `Отличный вопрос! Slotly — это умный плавающий ИИ-консультант в правом нижнем углу сайта 💬 Он 24/7 отвечает на вопросы ваших клиентов по товарам и услугам, помогает с поддержкой и собирает горячие контакты лидов.\n\nХотите узнать, как установить его на ваш сайт или протестировать сбор лидов? 🎯`;
+    const rate = takeRateLimit(`demo:${requestAddress(request)}`, 20, 60_000)
+    if (!rate.allowed) {
+      return json(
+        { error: 'Слишком много сообщений. Попробуйте через минуту.' },
+        429,
+        { 'Retry-After': String(rate.retryAfterSeconds) },
+      )
     }
 
-    return NextResponse.json({ reply });
-  } catch (err) {
-    console.error('Chat API Error:', err);
-    return NextResponse.json({ reply: 'Извините, произошла ошибка. Попробуйте еще раз.' }, { status: 500 });
+    const reply = await answerFromKnowledge({
+      knowledge: slotlyKnowledge,
+      question: parsed.data.message,
+      history: parsed.data.history.map(item => ({
+        role: item.sender === 'bot' ? 'assistant' as const : 'user' as const,
+        content: item.text,
+      })),
+    })
+    return json({ reply })
+  } catch (error) {
+    if (error instanceof RequestBodyError) return json({ error: error.message }, error.status)
+    if (error instanceof WidgetChatError) return json({ error: error.message }, error.status)
+
+    const reference = crypto.randomUUID()
+    console.error('demo_chat_unhandled', { reference, error })
+    return json({ error: `Демо временно недоступно. Номер обращения: ${reference}.` }, 500)
   }
 }

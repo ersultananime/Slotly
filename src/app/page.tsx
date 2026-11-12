@@ -80,18 +80,18 @@ export default function Home() {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200/80 px-3.5 py-1.5 rounded-full shadow-xs">
                 <span>✨</span>
-                <span>Умный виджет поддержки и продаж на сайте</span>
+                <span>Открытая бета-версия</span>
               </div>
 
               {/* Main Headline */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-slate-900 text-balance">
-                Умный ИИ-консультант <br className="hidden sm:inline" />
-                <span className="text-blue-600">для вашего сайта</span>
+                Превращайте вопросы <br className="hidden sm:inline" />
+                <span className="text-blue-600">посетителей в заявки</span>
               </h1>
 
               {/* Subtitle */}
               <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed text-pretty font-normal">
-                Установите виджет чата в правом нижнем углу сайта за&nbsp;2&nbsp;минуты. ИИ&#8209;ассистент будет мгновенно отвечать на вопросы клиентов, консультировать по вашим услугам 24/7 и&nbsp;повышать конверсию продаж.
+                Slotly анализирует публичные страницы сайта, готовит базу знаний и отвечает посетителям по проверенному владельцем тексту. Заинтересованный клиент может оставить контакт прямо в чате.
               </p>
 
               {/* Action Buttons */}
@@ -117,15 +117,15 @@ export default function Home() {
               <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-slate-500 font-medium">
                 <div className="flex items-center gap-1.5">
                   <span className="text-emerald-600 font-bold">✅</span>
-                  <span>14 дней бесплатно</span>
+                  <span>Бета-доступ бесплатно</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span>⚡</span>
-                  <span>1 строчка кода для установки</span>
+                  <span>Внешний скрипт для установки</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span>💳</span>
-                  <span>Без привязки карты</span>
+                  <span>Заявки в личном кабинете</span>
                 </div>
               </div>
             </div>
@@ -146,10 +146,10 @@ export default function Home() {
                 <span>Возможности ИИ-виджета</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-                Всё для мгновенной консультации и продаж
+                От вопроса посетителя до заявки
               </h2>
               <p className="text-slate-600 text-sm sm:text-base text-pretty">
-                Slotly заменяет оператора, консультирует клиентов и собирает контакты лидов прямо в правом нижнем углу вашего сайта.
+                Консультант отвечает по сохранённой базе знаний и предлагает добровольную форму контакта, когда посетителю нужна помощь компании.
               </p>
             </div>
 
@@ -165,11 +165,11 @@ export default function Home() {
                     Простая интеграция
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Установка на любой сайт (Tilda, WordPress, React, Bitrix или HTML) буквально в 1 строчку кода. Без сложных плагинов.
+                    Подключение обычным внешним JavaScript-кодом. Совместимость с платформами проверяется поэтапно во время бета-теста.
                   </p>
                 </div>
                 <div className="mt-5 p-3 rounded-xl bg-slate-900 text-slate-200 font-mono text-[11px] overflow-x-auto shadow-inner">
-                  <code>&lt;script src=&quot;https://slotly.kz/widget.js&quot;&gt;&lt;/script&gt;</code>
+                  <code>&lt;script src=&quot;https://slotly-inky.vercel.app/widget.js&quot; data-company-id=&quot;...&quot;&gt;&lt;/script&gt;</code>
                 </div>
               </div>
 
@@ -183,12 +183,12 @@ export default function Home() {
                     Обучение на вашей базе знаний
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Вы загружаете прайс-лист, FAQ или ссылки на сайт, и ИИ отвечает строго по вашим правилам, ценам и услугам без выдумок.
+                    Slotly читает до пяти публичных страниц. Вы проверяете и редактируете результат до того, как консультант начнёт отвечать.
                   </p>
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-amber-50/60 border border-amber-100 p-2.5 rounded-lg">
                   <span className="text-amber-600 font-bold">📄</span>
-                  <span>Прайсы, регламенты и PDF-файлы</span>
+                  <span>Сайт и ручное редактирование</span>
                 </div>
               </div>
 
@@ -202,12 +202,12 @@ export default function Home() {
                     Сбор контактов (Lead Generation)
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Помощник аккуратно запрашивает имя, телефон или Telegram посетителя в ходе естественного диалога для передачи вашей команде.
+                    Посетитель сам открывает форму и, если согласен на обратную связь, оставляет имя, телефон, email или Telegram.
                   </p>
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-emerald-50/60 border border-emerald-100 p-2.5 rounded-lg">
                   <span className="text-emerald-600 font-bold">📲</span>
-                  <span>Моментальные заявки в Telegram / CRM</span>
+                  <span>Заявки сохраняются в кабинете Slotly</span>
                 </div>
               </div>
 
@@ -218,15 +218,15 @@ export default function Home() {
                     🎨
                   </div>
                   <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Кастомизация внешнего вида
+                    Проверка перед запуском
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Настройка цвета виджета, аватарки, приветственного сообщения и позиции на экране под дизайн и стиль вашего сайта.
+                    Сгенерированный текст не публикуется автоматически: владелец может исправить цены, контакты и формулировки перед сохранением.
                   </p>
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-rose-50/60 border border-rose-100 p-2.5 rounded-lg">
                   <span className="text-rose-600 font-bold">💎</span>
-                  <span>Гармонично смотрится на любом сайте</span>
+                  <span>Владелец контролирует базу знаний</span>
                 </div>
               </div>
 
@@ -237,15 +237,15 @@ export default function Home() {
                     🛎️
                   </div>
                   <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Перевод на оператора
+                    Честные ограничения
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Если вопрос слишком сложный или требует индивидуального решения, ИИ перенаправляет диалог менеджеру в Telegram или CRM.
+                    Если нужного факта нет в базе знаний, консультант сообщает об этом и предлагает оставить контакт вместо выдуманного ответа.
                   </p>
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-purple-50/60 border border-purple-100 p-2.5 rounded-lg">
                   <span className="text-purple-600 font-bold">🤝</span>
-                  <span>Без потери контекста переписки</span>
+                  <span>Цены и контакты не должны выдумываться</span>
                 </div>
               </div>
 
@@ -256,15 +256,15 @@ export default function Home() {
                     📈
                   </div>
                   <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Аналитика и конверсия
+                    CRM собранных заявок
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Удобная статистика: количество диалогов, собранных лидов, популярные вопросы гостей и время пиковой активности.
+                    Владелец видит имя, контакт, содержание обращения, дату и статус каждой заявки в защищённом личном кабинете.
                   </p>
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-cyan-50/60 border border-cyan-100 p-2.5 rounded-lg">
                   <span className="text-cyan-600 font-bold">📊</span>
-                  <span>Полный контроль эффективности</span>
+                  <span>Данные разделены по компаниям</span>
                 </div>
               </div>
             </div>
@@ -280,10 +280,10 @@ export default function Home() {
                 <span>Как это работает</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-                Три шага — и ИИ консультирует ваших гостей
+                Три шага до первого внутреннего теста
               </h2>
               <p className="text-slate-600 text-sm sm:text-base text-pretty">
-                Настройка занимает 5 минут прямо в личном кабинете.
+                Перед публикацией проверьте ответы консультанта на своём сайте.
               </p>
             </div>
 
@@ -298,7 +298,7 @@ export default function Home() {
                   <span>Настройте ответы ИИ</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Вы создаете и настраиваете ответы ИИ-помощника под свой бизнес: добавляете прайс, FAQ и условия.
+                  Укажите сайт, проверьте подготовленную информацию и исправьте неточности перед сохранением.
                 </p>
               </div>
 
@@ -312,7 +312,7 @@ export default function Home() {
                   <span>Скопируйте скрипт</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Копируете короткий скрипт и вставляете его на свой сайт (Tilda, WordPress, React или любой HTML).
+                  Скопируйте короткий внешний скрипт. Начните проверку с тестовой HTML-страницы или среды разработки.
                 </p>
               </div>
 
@@ -326,7 +326,7 @@ export default function Home() {
                   <span>ИИ начинает работу</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  В правом нижнем углу появляется иконка чата, и ИИ начинает консультировать ваших гостей и собирать лиды.
+                  Задайте контрольные вопросы, проверьте ответы и отправьте тестовую заявку в личный кабинет.
                 </p>
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function Home() {
                 Подходит для любого бизнеса с сайтом
               </h2>
               <p className="text-slate-600 text-sm sm:text-base text-pretty">
-                Любая компания, которая общается с клиентами онлайн, увеличивает конверсию со Slotly.
+                Бета-версия предназначена для проверки на сайтах, где посетители регулярно задают вопросы об услугах и условиях.
               </p>
             </div>
 
@@ -382,13 +382,13 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-6 text-center space-y-4 mb-12">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
               <span>💎</span>
-              <span>Тариф</span>
+              <span>Бета-доступ</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-              Один прозрачный тариф. Всё включено.
+              Во время бета-теста — бесплатно
             </h2>
             <p className="text-slate-600 text-sm sm:text-base text-pretty">
-              Первые {PRICING.trialDays} дней бесплатно — протестируйте на реальных клиентах без привязки карты.
+              Сначала проверьте консультанта самостоятельно. Оплата и автоматическое продление сейчас не подключены.
             </p>
           </div>
 
@@ -397,16 +397,15 @@ export default function Home() {
               <div className="flex items-center justify-between pb-6 border-b border-slate-100">
                 <div>
                   <span className="text-xs font-extrabold uppercase tracking-wider text-blue-600">
-                    Тариф «Бизнес»
+                    Открытая бета-версия
                   </span>
                   <div className="mt-2 text-4xl sm:text-5xl font-extrabold text-slate-900 flex items-baseline gap-2">
-                    <span className="tabular-nums font-mono">{PRICING.amount.toLocaleString()}</span> {PRICING.currency}
-                    <span className="text-xs text-slate-500 font-normal">/ {PRICING.period}</span>
+                    <span>Бесплатно</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <span className="inline-flex text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                    {PRICING.trialDays} дней триал
+                    Бета
                   </span>
                 </div>
               </div>
@@ -425,13 +424,13 @@ export default function Home() {
               <div className="pt-2">
                 <Link
                   href="/register"
-                  aria-label={`Начать бесплатный пробный период на ${PRICING.trialDays} дней`}
+                  aria-label="Присоединиться к бесплатному бета-тестированию"
                   className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-sm transition-colors duration-150 ease-out shadow-md shadow-blue-500/25 motion-safe:active:scale-[0.96] block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
-                  Начать бесплатный период — {PRICING.trialDays} дней
+                  Присоединиться к бета-тесту
                 </Link>
                 <p className="text-center text-[11px] text-slate-400 mt-3 font-medium">
-                  Без привязки карты • Быстрая отмена в любой момент
+                  Оплата не подключена • Сначала проведите внутренний тест
                 </p>
               </div>
             </div>
@@ -443,10 +442,10 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-6">
             <div className="rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center space-y-6 shadow-xl relative overflow-hidden">
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-balance">
-                Готовы увеличить продажи на сайте? 🚀
+                Готовы проверить консультанта на своём сайте?
               </h2>
               <p className="text-sm sm:text-base text-blue-100 max-w-lg mx-auto text-pretty">
-                Установите виджет Slotly за 2 минуты и начинайте получать заявки от посетителей 24/7.
+                Создайте базу знаний, задайте контрольные вопросы и убедитесь, что ответы подходят вашему бизнесу.
               </p>
               <div className="pt-2 flex justify-center">
                 <Link

@@ -13,17 +13,17 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
-    text: 'Здравствуйте! 👋 Я живой ИИ-консультант Slotly. Чем могу помочь? Могу рассказать о тарифах, подключении или помочь настроить виджет под ваш сайт!',
+    text: 'Здравствуйте! 👋 Это ИИ-демо Slotly. Я отвечаю по актуальному описанию бета-версии продукта. Чем могу помочь?',
     sender: 'bot',
     time: '12:00',
   },
 ];
 
 const SUGGESTIONS = [
-  'Сколько стоит виджет? 💎',
-  'Как установить на сайт? 🔌',
-  'Как обучить на моём прайсе? 📚',
-  'Хочу подключить 14 дней бесплатно 🚀',
+  'Что уже работает?',
+  'Как установить виджет?',
+  'Как собираются заявки?',
+  'Что пока не реализовано?',
 ];
 
 export default function FloatingSiteChat() {
@@ -34,6 +34,7 @@ export default function FloatingSiteChat() {
   const [hasUnread, setHasUnread] = useState(true);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messageIdRef = useRef(2);
 
   useEffect(() => {
     if (isOpen && chatEndRef.current) {
@@ -63,7 +64,7 @@ export default function FloatingSiteChat() {
     if (!text || isTyping) return;
 
     const userMsg: Message = {
-      id: Date.now().toString(),
+      id: String(messageIdRef.current++),
       text,
       sender: 'user',
       time: getCurrentTime(),
@@ -77,7 +78,7 @@ export default function FloatingSiteChat() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history: messages }),
+        body: JSON.stringify({ message: text, history: messages.slice(-10) }),
       });
 
       const data = await res.json();
@@ -88,7 +89,7 @@ export default function FloatingSiteChat() {
         setMessages((prev) => [
           ...prev,
           {
-            id: (Date.now() + 1).toString(),
+            id: String(messageIdRef.current++),
             text: botReply,
             sender: 'bot',
             time: getCurrentTime(),
@@ -101,8 +102,8 @@ export default function FloatingSiteChat() {
         setMessages((prev) => [
           ...prev,
           {
-            id: (Date.now() + 1).toString(),
-            text: 'Я на связи! Напишите мне любой вопрос по виджету Slotly 😊',
+            id: String(messageIdRef.current++),
+            text: 'Демо временно недоступно. Попробуйте ещё раз немного позже.',
             sender: 'bot',
             time: getCurrentTime(),
           },
@@ -157,7 +158,7 @@ export default function FloatingSiteChat() {
                   </span>
                 </div>
                 <div className="text-blue-100 text-[10px]">
-                  Мгновенные ответы 24/7
+                  ИИ-демо текущей бета-версии
                 </div>
               </div>
             </div>

@@ -11,6 +11,33 @@ type Lead = {
   created_at: string
 }
 
+function asText(value: unknown) {
+  return typeof value === 'string' && value.trim() ? value.trim() : null
+}
+
+function normalizeLead(value: unknown): Lead | null {
+  if (!value || typeof value !== 'object') return null
+  const row = value as Record<string, unknown>
+  const id = asText(row.id)
+  const createdAt = asText(row.created_at)
+  if (!id || !createdAt) return null
+
+  const contact = asText(row.contact) || [
+    asText(row.phone),
+    asText(row.telegram),
+    asText(row.email),
+  ].filter(Boolean).join(' · ') || null
+
+  return {
+    id,
+    name: asText(row.name) || asText(row.client_name),
+    contact,
+    message: asText(row.message) || asText(row.summary),
+    status: asText(row.status),
+    created_at: createdAt,
+  }
+}
+
 const statuses: Record<string, { label: string; style: string }> = {
   new: { label: 'Новый', style: 'bg-blue-50 text-blue-700' },
   in_progress: { label: 'В работе', style: 'bg-amber-50 text-amber-800' },
@@ -25,12 +52,12 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
   const page = Number.isSafeInteger(requestedPage) && requestedPage > 0 && requestedPage <= 1000000 ? requestedPage : 1
   const pageSize = 50
   const { data, error, count } = await supabase.from('leads')
-    .select('id, name, contact, message, status, created_at', { count: 'exact' })
+    .select('*', { count: 'exact' })
     .eq('company_id', companyId)
     .order('created_at', { ascending: false }).order('id', { ascending: false })
     .range((page - 1) * pageSize, page * pageSize - 1)
   if (error) throw new Error('Не удалось загрузить лиды.')
-  const leads = (data ?? []) as Lead[]
+  const leads = (data ?? []).map(normalizeLead).filter((lead): lead is Lead => lead !== null)
   const dateFormat = new Intl.DateTimeFormat('ru-RU', {
     dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Qyzylorda',
   })

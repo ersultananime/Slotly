@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, RotateCcw, Sparkles } from 'lucide-react';
+import { X, Send, RotateCcw } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -13,17 +13,17 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
-    text: 'Здравствуйте! 👋 Я виртуальный консультант Slotly. Отвечу на любые вопросы по услугам, ценам или помогу подключить виджет на ваш сайт. Напишите мне или выберите вопрос ниже! 💡',
+    text: 'Здравствуйте! 👋 Это ИИ-демо Slotly. Я отвечаю по актуальному описанию бета-версии продукта. Напишите вопрос или выберите вариант ниже.',
     sender: 'bot',
     time: '12:00',
   },
 ];
 
 const QUICK_QUESTIONS = [
-  'Сколько стоит виджет? 💎',
-  'Как установить на сайт? 🔌',
-  'Как ИИ собирает лиды? 🎯',
-  'Как обучить на моём прайсе? 📚',
+  'Что уже работает в бета-версии?',
+  'Как установить виджет?',
+  'Как сохраняются заявки?',
+  'Что пока не реализовано?',
 ];
 
 export default function ChatWidgetDemo() {
@@ -34,6 +34,7 @@ export default function ChatWidgetDemo() {
   const [hasUnread, setHasUnread] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messageIdRef = useRef(2);
 
   useEffect(() => {
     if (isOpen && chatEndRef.current) {
@@ -51,7 +52,7 @@ export default function ChatWidgetDemo() {
     if (!text || isTyping) return;
 
     const userMsg: Message = {
-      id: Date.now().toString(),
+      id: String(messageIdRef.current++),
       text,
       sender: 'user',
       time: getCurrentTime(),
@@ -65,7 +66,7 @@ export default function ChatWidgetDemo() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history: messages }),
+        body: JSON.stringify({ message: text, history: messages.slice(-10) }),
       });
 
       const data = await res.json();
@@ -77,21 +78,21 @@ export default function ChatWidgetDemo() {
         setMessages((prev) => [
           ...prev,
           {
-            id: (Date.now() + 1).toString(),
+            id: String(messageIdRef.current++),
             text: botReply,
             sender: 'bot',
             time: getCurrentTime(),
           },
         ]);
       }, 700);
-    } catch (err) {
+    } catch {
       setTimeout(() => {
         setIsTyping(false);
         setMessages((prev) => [
           ...prev,
           {
-            id: (Date.now() + 1).toString(),
-            text: 'Готов ответить на любые вопросы по виджету Slotly! Напишите, о чём хотите узнать 😊',
+            id: String(messageIdRef.current++),
+            text: 'Демо временно недоступно. Попробуйте ещё раз немного позже.',
             sender: 'bot',
             time: getCurrentTime(),
           },
@@ -235,7 +236,7 @@ export default function ChatWidgetDemo() {
                   </span>
                 </div>
                 <div className="text-blue-100 text-[10px]">
-                  Отвечает на любые вопросы 24/7
+                  ИИ-демо по текущей версии Slotly
                 </div>
               </div>
             </div>
