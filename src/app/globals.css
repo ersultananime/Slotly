@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 :root {
   /* Fresh, Clean, Modern Light Palette (Notion / Stripe / Linear Light) */
-  --color-bg-base: #F8FAFC;
-  --color-bg-subtle: #F1F5F9;
+  --color-bg-base: #F7F5F0;
+  --color-bg-subtle: #ECE8DF;
   --color-bg-surface: #FFFFFF;
   --color-bg-card: #FFFFFF;
 
@@ -14,11 +13,11 @@
   --color-text-muted: #64748B;
   --color-text-faint: #94A3B8;
 
-  /* Refined Blue & Emerald Accents */
-  --color-accent: #2563EB;
-  --color-accent-hover: #1D4ED8;
-  --color-accent-soft: #EFF6FF;
-  --color-accent-border: #BFDBFE;
+  /* Brand accent derived from the Slotly mark */
+  --color-accent: #B9430F;
+  --color-accent-hover: #96360C;
+  --color-accent-soft: #F8E6DC;
+  --color-accent-border: #E9B99F;
 
   /* Status */
   --color-success: #10B981;
@@ -40,7 +39,7 @@ html {
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: var(--color-bg-base);
   color: var(--color-text-primary);
   line-height: 1.6;
@@ -69,42 +68,7 @@ body {
   background: #94A3B8;
 }
 
-/* Fresh Light Card with subtle crisp shadow */
-.clean-card {
-  background: #FFFFFF;
-  border: 1px solid var(--border-light);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  transition-property: transform, box-shadow, border-color;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.clean-card:hover {
-  border-color: #CBD5E1;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
-}
-
-/* Dot pattern background */
-.dot-pattern {
-  background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Ambient warm-blue mesh gradient */
-.ambient-light {
-  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 65%);
-}
-
-/* Headline gradient */
-.headline-gradient {
-  background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Animations */
+/* Animation used by legacy embedded widgets. */
 @keyframes typing-dots {
   0%, 20% { opacity: 0.3; transform: translateY(0); }
   50% { opacity: 1; transform: translateY(-2px); }
@@ -116,33 +80,25 @@ body {
   50% { opacity: 0.6; transform: scale(0.96); }
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 2s infinite ease-in-out;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .clean-card {
-    transition: none;
-  }
-
-  .clean-card:hover {
-    transform: none;
-  }
-
-  .animate-pulse-subtle {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
 ::selection {
-  background: #BFDBFE;
-  color: #1E3A8A;
+  background: #F3C6AE;
+  color: #632205;
 }

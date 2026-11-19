@@ -1,490 +1,268 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import {
+  ArrowRight,
+  Check,
+  Code2,
+  FileCheck2,
+  Inbox,
+  ShieldCheck,
+} from 'lucide-react';
 import { PRICING } from '@/lib/config';
 import ChatWidgetDemo from './components/ChatWidgetDemo';
-import FloatingSiteChat from './components/FloatingSiteChat';
-import { ArrowRight } from 'lucide-react';
+
+const capabilities = [
+  {
+    icon: FileCheck2,
+    title: 'Подготовьте точные ответы',
+    text: 'Укажите сайт, проверьте собранную информацию и исправьте цены, контакты или условия до публикации.',
+  },
+  {
+    icon: Code2,
+    title: 'Подключите одной строкой',
+    text: 'Добавьте готовый JavaScript-код на сайт. Виджет работает отдельно и не требует переделывать страницы.',
+  },
+  {
+    icon: Inbox,
+    title: 'Получайте обращения',
+    text: 'Если посетителю нужен человек, он может добровольно оставить контакт. Заявка появится в личном кабинете.',
+  },
+];
+
+const steps = [
+  ['01', 'Добавьте сайт', 'Slotly прочитает до пяти публичных страниц и подготовит черновик базы знаний.'],
+  ['02', 'Проверьте информацию', 'Вы решаете, какие ответы увидят посетители, и сохраняете только подтверждённый текст.'],
+  ['03', 'Установите виджет', 'Скопируйте код на сайт и следите за новыми обращениями в личном кабинете.'],
+];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] relative overflow-hidden font-sans">
-      {/* Skip to main content link for keyboard accessibility */}
+    <div className="min-h-screen bg-[#f7f5f0] text-[#18201c]">
       <a
         href="#content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:outline-2 focus:outline-offset-2 focus:outline-blue-600"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:bg-white focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-[#18201c]"
       >
         Перейти к основному содержимому
       </a>
 
-      {/* Ambient background lighting and subtle grid */}
-      <div className="fixed inset-0 pointer-events-none z-0 ambient-light" aria-hidden="true" />
-      <div className="fixed inset-0 pointer-events-none z-0 dot-pattern opacity-40" aria-hidden="true" />
-
-      {/* ===== НАВИГАЦИЯ (Pill Navbar) ===== */}
-      <nav 
-        aria-label="Главная навигация" 
-        className="sticky top-4 z-50 max-w-5xl mx-auto px-4 sm:px-6"
-      >
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md shadow-slate-200/50 rounded-full py-2.5 px-5 sm:px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 group">
-            <img 
-              src="/logo.jpeg" 
-              alt=""
-              className="w-8 h-8 rounded-lg object-contain shadow-xs motion-safe:group-hover:scale-105 motion-safe:transition-transform"
-            />
-            <span className="text-base font-extrabold tracking-tight text-slate-900">
-              Slotly<span className="text-blue-600">.</span>
-            </span>
+      <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f7f5f0]/95 backdrop-blur-sm">
+        <nav
+          aria-label="Главная навигация"
+          className="mx-auto flex min-h-16 max-w-6xl items-center justify-between px-5 sm:px-8"
+        >
+          <Link href="/" className="flex items-center gap-2.5 font-bold tracking-[-0.02em]">
+            <Image src="/logo.jpeg" alt="" width={34} height={34} className="rounded-lg" priority />
+            <span className="text-lg">Slotly</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
-            <a href="#features" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
-              Возможности
-            </a>
-            <a href="#how" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
-              Как это работает
-            </a>
-            <a href="#audience" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
-              Для кого
-            </a>
-            <a href="#pricing" className="rounded-md hover:text-blue-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600">
-              Тариф
-            </a>
+          <div className="hidden items-center gap-7 text-sm text-[#53605a] md:flex">
+            <a href="#capabilities" className="transition-colors hover:text-[#18201c]">Возможности</a>
+            <a href="#how" className="transition-colors hover:text-[#18201c]">Как работает</a>
+            <a href="#pricing" className="transition-colors hover:text-[#18201c]">Тариф</a>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/login"
-              className="hidden sm:inline-flex rounded-full px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-            >
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link href="/login" className="hidden px-2 py-2 text-sm font-semibold text-[#53605a] hover:text-[#18201c] sm:inline-flex">
               Войти
             </Link>
             <Link
               href="/register"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition-colors duration-150 ease-out motion-safe:active:scale-[0.96] shadow-sm inline-flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#b9430f] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#96360c] motion-safe:active:scale-[0.96]"
             >
               <span className="sm:hidden">Начать</span>
-              <span className="hidden sm:inline">Попробовать бесплатно</span>
-              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="hidden sm:inline">Начать бесплатно</span>
+              <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
             </Link>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
-      {/* ===== ОСНОВНОЙ КОНТЕНТ ===== */}
-      <main id="content" className="relative z-10">
-        {/* ===== HERO SECTION ===== */}
-        <header className="max-w-6xl mx-auto px-6 pt-12 md:pt-20 pb-16 lg:pb-24">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-            {/* Left Column: Value Proposition */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200/80 px-3.5 py-1.5 rounded-full shadow-xs">
-                <span>✨</span>
-                <span>Открытая бета-версия</span>
-              </div>
+      <main id="content">
+        <section className="mx-auto grid max-w-6xl gap-14 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[minmax(0,1.04fr)_minmax(360px,0.96fr)] lg:items-center lg:py-24">
+          <div className="min-w-0">
+            <p className="mb-6 text-sm font-semibold uppercase tracking-[0.08em] text-[#a13a0c]">
+              ИИ-консультант для сайта
+            </p>
+            <h1 className="max-w-3xl text-4xl font-bold leading-[1.08] tracking-[-0.04em] text-balance sm:text-5xl lg:text-[3.75rem]">
+              Отвечайте посетителям, даже когда вы офлайн
+            </h1>
+            <p className="mt-6 max-w-[62ch] text-base leading-7 text-[#53605a] text-pretty sm:text-lg sm:leading-8">
+              Slotly изучает информацию о компании, отвечает на вопросы и сохраняет контакты заинтересованных клиентов. Вы проверяете каждый ответ до запуска.
+            </p>
 
-              {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-slate-900 text-balance">
-                Превращайте вопросы <br className="hidden sm:inline" />
-                <span className="text-blue-600">посетителей в заявки</span>
-              </h1>
-
-              {/* Subtitle */}
-              <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed text-pretty font-normal">
-                Slotly анализирует публичные страницы сайта, готовит базу знаний и отвечает посетителям по проверенному владельцем тексту. Заинтересованный клиент может оставить контакт прямо в чате.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap gap-3.5 items-center">
-                <Link
-                  href="/register"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3.5 rounded-xl text-sm font-semibold transition-colors duration-150 ease-out shadow-md shadow-blue-500/20 motion-safe:active:scale-[0.96] flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                >
-                  <span>Начать бесплатно</span>
-                  <span>🚀</span>
-                </Link>
-
-                <a
-                  href="#demo"
-                  className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-6 py-3.5 rounded-xl text-sm font-semibold transition-colors duration-150 ease-out motion-safe:active:scale-[0.96] shadow-xs flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                >
-                  <span>💬</span>
-                  <span>Протестировать чат</span>
-                </a>
-              </div>
-
-              {/* Trust Indicators */}
-              <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-slate-500 font-medium">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-emerald-600 font-bold">✅</span>
-                  <span>Бета-доступ бесплатно</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span>⚡</span>
-                  <span>Внешний скрипт для установки</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span>💳</span>
-                  <span>Заявки в личном кабинете</span>
-                </div>
-              </div>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link
+                href="/register"
+                className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-[#b9430f] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#96360c] motion-safe:active:scale-[0.96]"
+              >
+                Создать консультанта
+                <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
+              </Link>
+              <a href="#demo" className="inline-flex min-h-12 items-center border-b border-[#18201c] px-1 text-sm font-semibold text-[#18201c] hover:border-[#b9430f] hover:text-[#a13a0c]">
+                Проверить демо
+              </a>
             </div>
 
-            {/* Right Column: Live Interactive Demo */}
-            <div id="demo" className="lg:col-span-5 flex items-center justify-center">
-              <ChatWidgetDemo />
-            </div>
+            <dl className="mt-12 grid max-w-xl grid-cols-1 gap-5 border-t border-black/10 pt-6 sm:grid-cols-3">
+              <div>
+                <dt className="text-sm text-[#6b756f]">Подготовка</dt>
+                <dd className="mt-1 font-semibold">до 5 страниц</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-[#6b756f]">Установка</dt>
+                <dd className="mt-1 font-semibold">1 строка кода</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-[#6b756f]">Доступ</dt>
+                <dd className="mt-1 font-semibold">14 дней бесплатно</dd>
+              </div>
+            </dl>
           </div>
-        </header>
 
-        {/* ===== FEATURES BENTO SECTION ===== */}
-        <section id="features" className="py-20 border-t border-slate-200 bg-white/60 relative">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
-                <span>🎯</span>
-                <span>Возможности ИИ-виджета</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-                От вопроса посетителя до заявки
-              </h2>
-              <p className="text-slate-600 text-sm sm:text-base text-pretty">
-                Консультант отвечает по сохранённой базе знаний и предлагает добровольную форму контакта, когда посетителю нужна помощь компании.
-              </p>
-            </div>
-
-            {/* Bento Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {/* Feature 1 */}
-              <div className="clean-card rounded-2xl p-6 flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-                    🔌
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Простая интеграция
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Подключение обычным внешним JavaScript-кодом. Совместимость с платформами проверяется поэтапно во время бета-теста.
-                  </p>
-                </div>
-                <div className="mt-5 p-3 rounded-xl bg-slate-900 text-slate-200 font-mono text-[11px] overflow-x-auto shadow-inner">
-                  <code>&lt;script src=&quot;https://slotly-inky.vercel.app/widget.js&quot; data-company-id=&quot;...&quot;&gt;&lt;/script&gt;</code>
-                </div>
-              </div>
-
-              {/* Feature 2 */}
-              <div className="clean-card rounded-2xl p-6 flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-                    📚
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Обучение на вашей базе знаний
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Slotly читает до пяти публичных страниц. Вы проверяете и редактируете результат до того, как консультант начнёт отвечать.
-                  </p>
-                </div>
-                <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-amber-50/60 border border-amber-100 p-2.5 rounded-lg">
-                  <span className="text-amber-600 font-bold">📄</span>
-                  <span>Сайт и ручное редактирование</span>
-                </div>
-              </div>
-
-              {/* Feature 3 */}
-              <div className="clean-card rounded-2xl p-6 flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-                    🎯
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Сбор контактов (Lead Generation)
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Посетитель сам открывает форму и, если согласен на обратную связь, оставляет имя, телефон, email или Telegram.
-                  </p>
-                </div>
-                <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-emerald-50/60 border border-emerald-100 p-2.5 rounded-lg">
-                  <span className="text-emerald-600 font-bold">📲</span>
-                  <span>Заявки сохраняются в кабинете Slotly</span>
-                </div>
-              </div>
-
-              {/* Feature 4 */}
-              <div className="clean-card rounded-2xl p-6 flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-                    🎨
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Проверка перед запуском
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Сгенерированный текст не публикуется автоматически: владелец может исправить цены, контакты и формулировки перед сохранением.
-                  </p>
-                </div>
-                <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-rose-50/60 border border-rose-100 p-2.5 rounded-lg">
-                  <span className="text-rose-600 font-bold">💎</span>
-                  <span>Владелец контролирует базу знаний</span>
-                </div>
-              </div>
-
-              {/* Feature 5 */}
-              <div className="clean-card rounded-2xl p-6 flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-                    🛎️
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    Честные ограничения
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Если нужного факта нет в базе знаний, консультант сообщает об этом и предлагает оставить контакт вместо выдуманного ответа.
-                  </p>
-                </div>
-                <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-purple-50/60 border border-purple-100 p-2.5 rounded-lg">
-                  <span className="text-purple-600 font-bold">🤝</span>
-                  <span>Цены и контакты не должны выдумываться</span>
-                </div>
-              </div>
-
-              {/* Feature 6 */}
-              <div className="clean-card rounded-2xl p-6 flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-                    📈
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    CRM собранных заявок
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Владелец видит имя, контакт, содержание обращения, дату и статус каждой заявки в защищённом личном кабинете.
-                  </p>
-                </div>
-                <div className="mt-5 flex items-center gap-2 text-[11px] text-slate-600 bg-cyan-50/60 border border-cyan-100 p-2.5 rounded-lg">
-                  <span className="text-cyan-600 font-bold">📊</span>
-                  <span>Данные разделены по компаниям</span>
-                </div>
-              </div>
-            </div>
+          <div id="demo" className="min-w-0 scroll-mt-24">
+            <ChatWidgetDemo />
           </div>
         </section>
 
-        {/* ===== HOW IT WORKS SECTION ===== */}
-        <section id="how" className="py-20 border-t border-slate-200 bg-slate-50/50 relative">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="text-center max-w-xl mx-auto mb-16 space-y-3">
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
-                <span>⚡</span>
-                <span>Как это работает</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-                Три шага до первого внутреннего теста
+        <section id="capabilities" className="scroll-mt-20 border-y border-black/10 bg-white">
+          <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.78fr_1.22fr] lg:py-24">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#a13a0c]">Что делает Slotly</p>
+              <h2 className="mt-4 max-w-md text-3xl font-bold leading-[1.16] tracking-[-0.03em] text-balance sm:text-4xl">
+                Один консультант вместо набора разрозненных форм
               </h2>
-              <p className="text-slate-600 text-sm sm:text-base text-pretty">
-                Перед публикацией проверьте ответы консультанта на своём сайте.
+              <p className="mt-5 max-w-[54ch] leading-7 text-[#5f6a64] text-pretty">
+                Посетитель получает ответ в том же окне, а вам остаётся только обработать обращения, которым действительно нужен человек.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 relative">
-              {/* Step 1 */}
-              <div className="clean-card rounded-2xl p-6 relative">
-                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center mb-4 shadow-sm text-sm">
-                  1
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
-                  <span>⚙️</span>
-                  <span>Настройте ответы ИИ</span>
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Укажите сайт, проверьте подготовленную информацию и исправьте неточности перед сохранением.
-                </p>
-              </div>
-
-              {/* Step 2 */}
-              <div className="clean-card rounded-2xl p-6 relative">
-                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center mb-4 shadow-sm text-sm">
-                  2
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
-                  <span>📋</span>
-                  <span>Скопируйте скрипт</span>
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Скопируйте короткий внешний скрипт. Начните проверку с тестовой HTML-страницы или среды разработки.
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="clean-card rounded-2xl p-6 relative">
-                <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-extrabold flex items-center justify-center mb-4 shadow-sm text-sm">
-                  3
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
-                  <span>🚀</span>
-                  <span>ИИ начинает работу</span>
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Задайте контрольные вопросы, проверьте ответы и отправьте тестовую заявку в личный кабинет.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== TARGET AUDIENCE SECTION ===== */}
-        <section id="audience" className="py-20 border-t border-slate-200 bg-white relative">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="text-center max-w-xl mx-auto mb-14 space-y-3">
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
-                <span>👥</span>
-                <span>Для кого это</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-                Подходит для любого бизнеса с сайтом
-              </h2>
-              <p className="text-slate-600 text-sm sm:text-base text-pretty">
-                Бета-версия предназначена для проверки на сайтах, где посетители регулярно задают вопросы об услугах и условиях.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
-              {[
-                { emoji: '🛍️', title: 'Интернет-магазины', desc: 'Наличие, цены и доставка' },
-                { emoji: '💅', title: 'Бьюти-салоны', desc: 'Прайс и запись к мастерам' },
-                { emoji: '🩺', title: 'Мед. центры', desc: 'Услуги и запись к врачу' },
-                { emoji: '🎓', title: 'Онлайн-курсы', desc: 'Программы и тарифы' },
-                { emoji: '🛠️', title: 'Частные мастера', desc: 'Приём заявок от клиентов' },
-                { emoji: '🏢', title: 'Сервисные компании', desc: 'Круглосуточная поддержка' },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="clean-card rounded-xl p-4 text-center group"
-                >
-                  <div className="text-3xl mb-2 group-hover:scale-110 transition-transform" aria-hidden="true">
-                    {item.emoji}
+            <div className="divide-y divide-black/10 border-t border-black/10">
+              {capabilities.map(({ icon: Icon, title, text }) => (
+                <article key={title} className="grid gap-4 py-7 sm:grid-cols-[48px_minmax(0,1fr)] sm:gap-6">
+                  <div className="flex size-12 items-center justify-center rounded-lg bg-[#f8e6dc] text-[#a13a0c]">
+                    <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
                   </div>
-                  <h3 className="text-xs font-bold text-slate-900 mb-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-[11px] text-slate-500 leading-tight">
-                    {item.desc}
-                  </p>
-                </div>
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-[-0.01em]">{title}</h3>
+                    <p className="mt-2 max-w-[62ch] leading-7 text-[#5f6a64] text-pretty">{text}</p>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ===== PRICING SECTION ===== */}
-        <section id="pricing" className="py-20 border-t border-slate-200 bg-slate-50/70 relative">
-          <div className="max-w-4xl mx-auto px-6 text-center space-y-4 mb-12">
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
-              <span>💎</span>
-              <span>Бета-доступ</span>
+        <section id="how" className="scroll-mt-20 bg-[#1d2722] text-white">
+          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
+            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-end">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#f2a071]">Запуск без сложной настройки</p>
+                <h2 className="mt-4 text-3xl font-bold leading-[1.16] tracking-[-0.03em] text-balance sm:text-4xl">От ссылки до первого ответа</h2>
+              </div>
+              <p className="max-w-[64ch] leading-7 text-[#bec8c2] lg:justify-self-end">
+                Информация не публикуется автоматически. Сначала вы проверяете текст, затем устанавливаете виджет и только после этого принимаете обращения.
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
-              Во время бета-теста — бесплатно
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base text-pretty">
-              Сначала проверьте консультанта самостоятельно. Оплата и автоматическое продление сейчас не подключены.
-            </p>
-          </div>
 
-          <div className="max-w-lg mx-auto px-6">
-            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-xl relative overflow-hidden text-left">
-              <div className="flex items-center justify-between pb-6 border-b border-slate-100">
-                <div>
-                  <span className="text-xs font-extrabold uppercase tracking-wider text-blue-600">
-                    Открытая бета-версия
-                  </span>
-                  <div className="mt-2 text-4xl sm:text-5xl font-extrabold text-slate-900 flex items-baseline gap-2">
-                    <span>Бесплатно</span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="inline-flex text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                    Бета
-                  </span>
-                </div>
-              </div>
+            <ol className="mt-12 grid border-t border-white/20 lg:grid-cols-3">
+              {steps.map(([number, title, text], index) => (
+                <li key={number} className={'py-8 lg:px-7 ' + (index > 0 ? 'border-t border-white/20 lg:border-s lg:border-t-0' : 'lg:ps-0')}>
+                  <span className="font-mono text-sm text-[#f2a071]">{number}</span>
+                  <h3 className="mt-6 text-xl font-semibold tracking-[-0.02em]">{title}</h3>
+                  <p className="mt-3 leading-7 text-[#bec8c2] text-pretty">{text}</p>
+                </li>
+              ))}
+            </ol>
 
-              <div className="py-6 space-y-3">
-                {PRICING.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                    <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold text-[10px]" aria-hidden="true">
-                      ✓
-                    </div>
-                    <span>{feature}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2">
-                <Link
-                  href="/register"
-                  aria-label="Присоединиться к бесплатному бета-тестированию"
-                  className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-sm transition-colors duration-150 ease-out shadow-md shadow-blue-500/25 motion-safe:active:scale-[0.96] block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                >
-                  Присоединиться к бета-тесту
-                </Link>
-                <p className="text-center text-[11px] text-slate-400 mt-3 font-medium">
-                  Оплата не подключена • Сначала проведите внутренний тест
-                </p>
-              </div>
+            <div className="mt-12 overflow-x-auto rounded-lg border border-white/15 bg-black/20 p-5 font-mono text-sm leading-7 text-[#d9e1dc]">
+              <code className="whitespace-nowrap">&lt;script src=&quot;https://slotly-inky.vercel.app/widget.js&quot; data-company-id=&quot;...&quot;&gt;&lt;/script&gt;</code>
             </div>
           </div>
         </section>
 
-        {/* ===== FINAL CTA BANNER ===== */}
-        <section className="py-20 border-t border-slate-200 bg-white relative">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center space-y-6 shadow-xl relative overflow-hidden">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-balance">
-                Готовы проверить консультанта на своём сайте?
+        <section className="border-b border-black/10 bg-white">
+          <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:items-center lg:py-24">
+            <div>
+              <ShieldCheck aria-hidden="true" className="size-8 text-[#a13a0c]" strokeWidth={1.8} />
+              <h2 className="mt-6 max-w-lg text-3xl font-bold leading-[1.16] tracking-[-0.03em] text-balance sm:text-4xl">
+                Консультант не придумывает условия компании
               </h2>
-              <p className="text-sm sm:text-base text-blue-100 max-w-lg mx-auto text-pretty">
-                Создайте базу знаний, задайте контрольные вопросы и убедитесь, что ответы подходят вашему бизнесу.
+              <p className="mt-5 max-w-[62ch] leading-7 text-[#5f6a64] text-pretty">
+                Если ответа нет в базе знаний, Slotly честно сообщает об этом и предлагает посетителю оставить контакт. Цены и обещания не подставляются автоматически.
               </p>
-              <div className="pt-2 flex justify-center">
-                <Link
-                  href="/register"
-                  className="bg-white hover:bg-slate-100 text-blue-700 px-8 py-3.5 rounded-xl text-sm font-bold transition-colors duration-150 ease-out shadow-lg motion-safe:active:scale-[0.96] inline-flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                >
-                  <span>Создать аккаунт бесплатно</span>
-                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </Link>
-              </div>
             </div>
+
+            <div className="border-s-2 border-[#b9430f] ps-6 sm:ps-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#a13a0c]">Подходит для</p>
+              <p className="mt-4 text-xl leading-8 text-[#28332d] text-pretty">
+                Сервисных компаний, агентств, онлайн-школ, клиник и небольших команд, которым важно быстро ответить на типовой вопрос и не потерять обращение.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="pricing" className="scroll-mt-20">
+          <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:py-24">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#a13a0c]">Тариф после бета-теста</p>
+              <h2 className="mt-4 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+                <span className="tabular-nums">{PRICING.amount.toLocaleString('ru-RU')}</span> {PRICING.currency}
+                <span className="block text-lg font-medium tracking-normal text-[#68736d]">в месяц</span>
+              </h2>
+              <p className="mt-6 max-w-md leading-7 text-[#5f6a64]">
+                Первые {PRICING.trialDays} дней бесплатно. Карта для начала теста не требуется.
+              </p>
+            </div>
+
+            <div>
+              <ul className="grid gap-4 sm:grid-cols-2">
+                {PRICING.features.map((feature) => (
+                  <li key={feature} className="flex gap-3 leading-6 text-[#354039]">
+                    <Check aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[#a13a0c]" strokeWidth={2.5} />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/register"
+                className="mt-9 inline-flex min-h-12 items-center gap-2 rounded-lg bg-[#b9430f] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#96360c] motion-safe:active:scale-[0.96]"
+              >
+                Начать бесплатный тест
+                <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-black/10 bg-[#ece8df]">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:py-20">
+            <div>
+              <h2 className="max-w-2xl text-3xl font-bold leading-[1.16] tracking-[-0.03em] text-balance sm:text-4xl">
+                Проверьте Slotly на своём сайте
+              </h2>
+              <p className="mt-3 text-[#5f6a64]">Создайте консультанта, задайте ему реальные вопросы и решите, подходит ли он вашей команде.</p>
+            </div>
+            <Link
+              href="/register"
+              className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#18201c] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#2b3731] motion-safe:active:scale-[0.96]"
+            >
+              Создать консультанта
+              <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2.5} />
+            </Link>
           </div>
         </section>
       </main>
 
-      {/* ===== ПОДВАЛ ===== */}
-      <footer className="border-t border-slate-200 py-10 relative z-10 bg-[#F1F5F9]">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-2.5 font-medium">
-            <img 
-              src="/logo.jpeg" 
-              alt=""
-              className="w-6 h-6 rounded-md object-contain shadow-2xs" 
-            />
-            <span className="font-bold text-slate-800">Slotly.kz</span>
-            <span>— плавающий ИИ-консультант для вашего сайта</span>
+      <footer className="border-t border-black/10 bg-[#f7f5f0]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-sm text-[#68736d] sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <div className="flex items-center gap-2.5 text-[#28332d]">
+            <Image src="/logo.jpeg" alt="" width={28} height={28} className="rounded-md" />
+            <span className="font-semibold">Slotly</span>
           </div>
-
-          <div className="flex items-center gap-6 text-slate-600 font-medium">
-            <a href="#features" className="hover:text-blue-600 transition-colors">Возможности</a>
-            <a href="#how" className="hover:text-blue-600 transition-colors">Как это работает</a>
-            <a href="#pricing" className="hover:text-blue-600 transition-colors">Тариф</a>
-            <Link href="/login" className="hover:text-blue-600 transition-colors">Войти</Link>
-          </div>
+          <p>ИИ-консультант для ответов и обращений с сайта.</p>
+          <p>© 2026 Slotly</p>
         </div>
       </footer>
-
-      {/* Floating live site chat widget */}
-      <FloatingSiteChat />
     </div>
   );
 }
