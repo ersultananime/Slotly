@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createClient } from '@/utils/supabase/client'
+import { createImplicitClient } from '@/utils/supabase/implicit-client'
 
 export default function UpdatePasswordPage() {
-  const [supabase] = useState(() => createClient())
+  const [supabase] = useState(() => createImplicitClient())
   const [password, setPassword] = useState('')
   const [confirmation, setConfirmation] = useState('')
   const [checking, setChecking] = useState(true)

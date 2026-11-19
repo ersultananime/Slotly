@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createClient } from '@/utils/supabase/client'
+import { createImplicitClient } from '@/utils/supabase/implicit-client'
 
 export default function ForgotPasswordPage() {
-  const [supabase] = useState(() => createClient())
+  const [supabase] = useState(() => createImplicitClient())
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
     setLoading(true)
 
     try {
-      const redirectTo = `${window.location.origin}/auth/callback?next=/update-password`
+      const redirectTo = `${window.location.origin}/update-password`
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(
         email.trim(),
         { redirectTo }
