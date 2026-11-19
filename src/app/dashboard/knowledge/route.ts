@@ -58,22 +58,40 @@ export async function POST(request: Request) {
     let error = lookupError
 
     if (!lookupError) {
-      const result = existing
-        ? await supabase
-            .from('knowledge_base')
-            .update({ content })
-            .eq('id', existing.id)
-            .eq('company_id', companyId)
-            .select('id')
-            .single()
-        : await supabase
-            .from('knowledge_base')
-            .insert({ company_id: companyId, content, content_type: 'text' })
-            .select('id')
-            .single()
+      if (existing) {
+        const result = await supabase
+          .from('knowledge_base')
+          .update({ content })
+          .eq('id', existing.id)
+          .eq('company_id', companyId)
+          .select('id')
+          .single()
 
-      data = result.data
-      error = result.error
+        data = result.data
+        error = result.error
+      } else {
+        let result = await supabase
+          .from('knowledge_base')
+          .insert({ company_id: companyId, content, content_type: 'text' })
+          .select('id')
+          .single()
+
+        // The current dashboard schema stores plain text directly and does
+        // not have content_type. Older Slotly databases required that column.
+        if (
+          result.error?.code === 'PGRST204' &&
+          result.error.message.includes("'content_type'")
+        ) {
+          result = await supabase
+            .from('knowledge_base')
+            .insert({ company_id: companyId, content })
+            .select('id')
+            .single()
+        }
+
+        data = result.data
+        error = result.error
+      }
     }
 
     if (error || !data) {
