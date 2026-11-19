@@ -5,8 +5,11 @@ import { cookies } from 'next/headers'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  // if "next" is in param, use it as the redirect destination
-  const next = searchParams.get('next') ?? '/dashboard'
+  const flowId = searchParams.get('sb_flow_id')
+  const requestedNext = searchParams.get('next')
+  const next = requestedNext?.startsWith('/') && !requestedNext.startsWith('//')
+    ? requestedNext
+    : '/dashboard'
 
   if (code) {
     const cookieStore = await cookies()
@@ -32,7 +35,10 @@ export async function GET(request: Request) {
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { error } = await supabase.auth.exchangeCodeForSession(
+      code,
+      flowId ? { flowId } : undefined
+    )
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
     }
